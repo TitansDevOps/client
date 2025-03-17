@@ -1,6 +1,5 @@
 import * as React from "react"
 import { Dog } from "lucide-react"
-
 import { NavMain } from "@/components/nav-main"
 import { SidebarOptInForm } from "@/components/sidebar-opt-in-form"
 import {
@@ -35,11 +34,11 @@ const data = {
       items: [
         {
           title: "Whatsapp",
-          url: "#",
+          url: "#"
         },
         {
           title: "Instagram",
-          url: "#",
+          url: "#"
         }
       ],
     },
