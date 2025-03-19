@@ -3,6 +3,7 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority";
 import { Menu } from "lucide-react"
+import { Maximize, Minimize } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -248,6 +249,33 @@ const SidebarTrigger = React.forwardRef(({ className, onClick, ...props }, ref) 
   );
 })
 SidebarTrigger.displayName = "SidebarTrigger"
+
+const SidebarExpandTrigger = React.forwardRef(({ className, onClick, ...props }, ref) => {
+    const { isFullScreen, toggleFullScreenSidebar } = useSidebar(); // Estado y función del sidebar
+
+    return (
+        <Button
+            ref={ref}
+            data-sidebar="fullscreen-toggle"
+            variant="ghost"
+            size="icon"
+            className={cn("h-7 w-7", className)}
+            onClick={(event) => {
+                onClick?.(event);
+                toggleFullScreenSidebar(); // Alterna entre expandir y contraer
+            }}
+            {...props}
+        >
+            {isFullScreen ? <Minimize /> : <Maximize />} {/* Cambia el ícono */}
+            <span className="sr-only">Toggle Fullscreen Sidebar</span>
+        </Button>
+    );
+});
+
+SidebarExpandTrigger.displayName = "SidebarExpandTrigger";
+
+
+
 
 const SidebarRail = React.forwardRef(({ className, ...props }, ref) => {
   const { toggleSidebar } = useSidebar()
@@ -626,5 +654,6 @@ export {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
+    SidebarExpandTrigger,
   useSidebar,
 }

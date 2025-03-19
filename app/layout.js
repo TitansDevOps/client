@@ -47,3 +47,5 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+//SidebarTrigger es el boton que abre y cierra el sidebar
+//ModeToggle es el boton para cambiar el tema de la pagina

@@ -11,6 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+    SidebarExpandTrigger
 } from "@/app/components/ui/sidebar"
 
 // This is sample data.
@@ -66,6 +67,19 @@ export function AppSidebar({
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold">Menu</span>
                   <span className="">Titan Devs</span>
+                </div>
+                <div>
+                </div>
+                <div>
+                </div>
+                <div>
+                </div>
+                <div>
+                </div>
+                <div>
+                </div>
+                <div>
+                  <SidebarExpandTrigger className="size-12" />
                 </div>
               </a>
             </SidebarMenuButton>
