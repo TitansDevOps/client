@@ -1,9 +1,9 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import {SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
-import {AppSidebar} from "@/components/app-sidebar";
+import {SidebarProvider, SidebarTrigger} from "@/app/components/ui/sidebar";
+import {AppSidebar} from "@/app/components/app-sidebar";
 import {ThemeProvider} from "next-themes";
-import {ModeToggle} from "@/components/mode-toogle";
+import {ModeToggle} from "@/app/components/mode-toogle";
 
 
 const geistSans = localFont({

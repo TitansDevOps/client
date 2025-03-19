@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/app/components/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { SidebarInput } from "@/components/ui/sidebar"
+} from "@/app/components/ui/card"
+import { SidebarInput } from "@/app/components/ui/sidebar"
 
 export function SidebarOptInForm() {
   return (
