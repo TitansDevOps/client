@@ -1,7 +1,7 @@
-import Dashboard from "./dashboard/page";
+import LandingPage from "./landing/page";
 
 export default function Home() {
   return (
-    <Dashboard />
+    <LandingPage />
   );
 }
