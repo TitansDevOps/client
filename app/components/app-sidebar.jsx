@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Dog } from "lucide-react"
 import { NavMain } from "@/app/components/nav-main"
-import { SidebarOptInForm } from "@/app/components/sidebar-opt-in-form"
+//import { SidebarOptInForm } from "@/app/components/sidebar-opt-in-form"
 import {
   Sidebar,
   SidebarContent,
@@ -91,7 +91,6 @@ export function AppSidebar({
       </SidebarContent>
       <SidebarFooter>
         <div className="p-1">
-          <SidebarOptInForm />
         </div>
       </SidebarFooter>
       <SidebarRail />
