@@ -4,6 +4,10 @@ import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority";
 import { Menu } from "lucide-react"
 import { Maximize, Minimize } from "lucide-react"
+import { useRef, useImperativeHandle, forwardRef, useContext } from 'react';
+import { createContext, useState, useEffect } from "react";
+import { X, ArrowsOut, ArrowsIn } from 'phosphor-react';
+import PropTypes from "prop-types";
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { Button } from "@/app/components/ui/button"
@@ -31,46 +35,26 @@ const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
-const SidebarContext = React.createContext(null)
+const SidebarContext = React.createContext(null);
 
 function useSidebar() {
-    const context = React.useContext(SidebarContext)
+    const context = React.useContext(SidebarContext);
     if (!context) {
-        throw new Error("useSidebar must be used within a SidebarProvider.")
+        throw new Error("useSidebar must be used within a SidebarProvider.");
     }
-    return context
+    return context;
 }
-
-
 
 const SidebarProvider = React.forwardRef(({ children, className, style, ...props }, ref) => {
     const [isClient, setIsClient] = React.useState(false);
     const [isMobile, setIsMobile] = React.useState(false);
     const [open, setOpen] = React.useState(false);
-    const [openMobile, setOpenMobile] = React.useState(false);
-    const [isFullScreen, setIsFullScreen] = React.useState(false);
+    const [isFullScreen, setIsFullScreen] = React.useState(false); // Estado para expandir el sidebar
 
-    // Efecto para asegurarnos de que estamos en el cliente
     React.useEffect(() => {
         setIsClient(true);
     }, []);
 
-    // Efecto para manejar el atajo de teclado
-    React.useEffect(() => {
-        if (typeof window === "undefined") return;
-
-        const handleKeyDown = (event) => {
-            if (event.key === SIDEBAR_KEYBOARD_SHORTCUT && (event.metaKey || event.ctrlKey)) {
-                event.preventDefault();
-                toggleSidebar();
-            }
-        };
-
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, []);
-
-    // Efecto para detectar si es móvil
     React.useEffect(() => {
         if (typeof window === "undefined") return;
 
@@ -80,9 +64,8 @@ const SidebarProvider = React.forwardRef(({ children, className, style, ...props
         return () => window.removeEventListener("resize", updateMobile);
     }, []);
 
-    // Función para alternar la barra lateral
     const toggleSidebar = () => setOpen((prev) => !prev);
-    const toggleFullScreenSidebar = () => setIsFullScreen((prev) => !prev);
+    const toggleFullScreenSidebar = () => setIsFullScreen((prev) => !prev); // Expande solo el sidebar
 
     const state = isClient ? (open ? "expanded" : "collapsed") : "collapsed";
 
@@ -91,25 +74,22 @@ const SidebarProvider = React.forwardRef(({ children, className, style, ...props
         open,
         setOpen,
         isMobile,
-        openMobile,
-        setOpenMobile,
         toggleSidebar,
-        isFullScreen,
-        toggleFullScreenSidebar
-    }), [state, open, isMobile, openMobile, isFullScreen]);
+        isFullScreen, // Agregado
+        toggleFullScreenSidebar // Agregado
+    }), [state, open, isMobile, isFullScreen]);
 
     return (
         <SidebarContext.Provider value={contextValue}>
             <TooltipProvider delayDuration={0}>
                 <div
                     style={{
-                        "--sidebar-width": SIDEBAR_WIDTH,
-                        "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
+                        "--sidebar-width": isFullScreen ? "400px" : open ? "250px" : "60px", // Expande el sidebar sin afectar la página
+                        transition: "width 0.3s ease-in-out",
                         ...style
                     }}
                     className={cn(
-                        "group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar",
-                        isFullScreen ? "fixed inset-0 z-50 w-screen h-screen bg-black/80" : "",
+                        "group/sidebar-wrapper flex min-h-svh transition-all duration-300",
                         className
                     )}
                     ref={ref}
@@ -123,9 +103,6 @@ const SidebarProvider = React.forwardRef(({ children, className, style, ...props
 });
 
 SidebarProvider.displayName = "SidebarProvider";
-
-
-
 
 
 const Sidebar = React.forwardRef((
@@ -242,25 +219,65 @@ const SidebarTrigger = React.forwardRef(({ className, onClick, ...props }, ref) 
 })
 SidebarTrigger.displayName = "SidebarTrigger"
 
-const SidebarFullScreenToggle = React.forwardRef(({ className, onClick, ...props }) => {
-    const { isFullScreen, toggleFullScreenSidebar } = useSidebar()
+
+
+const SidebarC = forwardRef(({ children, className = '', title }, ref) => {
+    const bodyRef = useRef(null);
+    const { open, toggleSidebar, isFullScreen, toggleFullScreenSidebar } = useContext(SidebarContext);
+
+    useImperativeHandle(
+        ref,
+        () => ({
+            top(hash) {
+                if (!hash) {
+                    bodyRef.current?.scrollTo(0, 0);
+                    return;
+                }
+                const element = document.getElementById(hash);
+                if (element) {
+                    bodyRef.current?.scrollTo({
+                        top: element.offsetTop
+                    });
+                }
+            }
+        }),
+        []
+    );
+
+    const sidebarClassName = `${open ? 'sidebarOpen' : 'sidebarClosed'} ${isFullScreen ? 'sidebarFullscreen' : ''}`;
 
     return (
-        <button
-            data-sidebar="fullscreen-toggle"
-            className={`h-7 w-7 ${className}`}
-            onClick={(event) => {
-                onClick?.(event)
-                toggleFullScreenSidebar()
-            }}
-            {...props}
-        >
-            {isFullScreen ? <Minimize /> : <Maximize />}
-            <span className="sr-only">Toggle Fullscreen Sidebar</span>
-        </button>
-    )
-})
-SidebarFullScreenToggle.displayName = "SidebarFullScreenToggle"
+        <aside className={`sidebar ${sidebarClassName} ${className}`} aria-label='Sidebar'>
+            <div className='sidebarHeader'>
+                <h2 className='sidebarTitle'>{title}</h2>
+                <div className='sidebarHeaderButtons'>
+                    {/* 🔥 Botón de Expansión del Sidebar (Ahora funciona correctamente) */}
+                    <button className='sidebarFullscreenButton' onClick={toggleFullScreenSidebar}>
+                        {isFullScreen ? <ArrowsIn size={24} color="#333" /> : <ArrowsOut size={24} color="#333" />}
+                    </button>
+                    {/* ❌ Botón para Cerrar el Sidebar */}
+                    <button className='sidebarCloseButton' onClick={toggleSidebar}>
+                        <X size={24} color="#333" />
+                    </button>
+                </div>
+            </div>
+            <div className='sidebarContent' ref={bodyRef}>
+                <div>{children}</div>
+            </div>
+        </aside>
+    );
+});
+
+SidebarC.propTypes = {
+    children: PropTypes.node,
+    className: PropTypes.string,
+    title: PropTypes.string,
+};
+
+SidebarC.displayName = 'SidebarC';
+
+
+
 
 const SidebarRail = React.forwardRef(({ className, ...props }, ref) => {
   const { toggleSidebar } = useSidebar()
@@ -639,6 +656,6 @@ export {
   SidebarRail,
   SidebarSeparator,
   SidebarTrigger,
-    SidebarFullScreenToggle,
+    SidebarC,
   useSidebar,
 }

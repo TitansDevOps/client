@@ -11,7 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-  SidebarFullScreenToggle
+  SidebarC
 } from "@/app/components/ui/sidebar"
 
 // This is sample data.
@@ -79,7 +79,7 @@ export function AppSidebar({
                 <div>
                 </div>
                 <div>
-                  <SidebarFullScreenToggle className="size-12" />
+                  <SidebarC className="size-12" />
                 </div>
               </a>
             </SidebarMenuButton>

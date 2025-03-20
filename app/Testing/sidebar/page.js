@@ -7,6 +7,7 @@ import { AppSidebar } from "@/app/components/app-sidebar";
 import { ThemeProvider } from "next-themes";
 import { ModeToggle } from "@/app/components/mode-toogle";
 
+
 const geistSans = localFont({
     src: "../../fonts/GeistVF.woff",
     variable: "--font-geist-sans",
