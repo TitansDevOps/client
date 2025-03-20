@@ -1,9 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import {SidebarProvider, SidebarTrigger} from "@/app/components/ui/sidebar";
-import {AppSidebar} from "@/app/components/app-sidebar";
 import {ThemeProvider} from "next-themes";
-import {ModeToggle} from "@/app/components/mode-toogle";
 
 
 const geistSans = localFont({
@@ -34,14 +31,9 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
       >
-      <SidebarProvider>
-          <AppSidebar />
           <main>
-              <SidebarTrigger />
-              <ModeToggle />
               {children}
           </main>
-      </SidebarProvider>
       </ThemeProvider>
       </body>
     </html>
