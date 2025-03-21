@@ -84,7 +84,7 @@ const SidebarProvider = React.forwardRef(({ children, className, style, ...props
             <TooltipProvider delayDuration={0}>
                 <div
                     style={{
-                        "--sidebar-width": isFullScreen ? "400px" : open ? "250px" : "60px", // Expande el sidebar sin afectar la página
+                        "--sidebar-width": isFullScreen ? "1300px" : open ? "250px" : "60px", // Expande el sidebar sin afectar la página
                         transition: "width 0.3s ease-in-out",
                         ...style
                     }}
@@ -251,13 +251,8 @@ const SidebarC = forwardRef(({ children, className = '', title }, ref) => {
             <div className='sidebarHeader'>
                 <h2 className='sidebarTitle'>{title}</h2>
                 <div className='sidebarHeaderButtons'>
-                    {/* 🔥 Botón de Expansión del Sidebar (Ahora funciona correctamente) */}
                     <button className='sidebarFullscreenButton' onClick={toggleFullScreenSidebar}>
-                        {isFullScreen ? <ArrowsIn size={24} color="#333" /> : <ArrowsOut size={24} color="#333" />}
-                    </button>
-                    {/* ❌ Botón para Cerrar el Sidebar */}
-                    <button className='sidebarCloseButton' onClick={toggleSidebar}>
-                        <X size={24} color="#333" />
+                        {isFullScreen ? <ArrowsIn size={24} color="#f5f0f0" /> : <ArrowsOut size={24} color="#f5f0f0" />}
                     </button>
                 </div>
             </div>
