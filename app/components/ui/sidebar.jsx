@@ -3,12 +3,9 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority";
 import { Menu } from "lucide-react"
-import { Maximize, Minimize } from "lucide-react"
 import { useRef, useImperativeHandle, forwardRef, useContext } from 'react';
-import { createContext, useState, useEffect } from "react";
-import { X, ArrowsOut, ArrowsIn } from 'phosphor-react';
+import { ArrowsOut, ArrowsIn } from 'phosphor-react';
 import PropTypes from "prop-types";
-import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { Button } from "@/app/components/ui/button"
 import { Input } from "@/app/components/ui/input"
@@ -31,7 +28,7 @@ import {
 const SIDEBAR_COOKIE_NAME = "sidxebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = "16rem"
-const SIDEBAR_WIDTH_MOBILE = "18rem"
+const SIDEBAR_WIDTH_MOBILE = "200px"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
@@ -49,7 +46,7 @@ const SidebarProvider = React.forwardRef(({ children, className, style, ...props
     const [isClient, setIsClient] = React.useState(false);
     const [isMobile, setIsMobile] = React.useState(false);
     const [open, setOpen] = React.useState(false);
-    const [isFullScreen, setIsFullScreen] = React.useState(false); // Estado para expandir el sidebar
+    const [isFullScreen, setIsFullScreen] = React.useState(false);
 
     React.useEffect(() => {
         setIsClient(true);
@@ -58,43 +55,58 @@ const SidebarProvider = React.forwardRef(({ children, className, style, ...props
     React.useEffect(() => {
         if (typeof window === "undefined") return;
 
-        const updateMobile = () => setIsMobile(window.innerWidth < 768);
+        const updateMobile = () => {
+            const width = window.innerWidth;
+            const mobile = width <= 640;
+            setIsMobile(mobile);
+            console.log("📱 isMobile:", mobile, "Ancho:", width);
+        };
+
         updateMobile();
         window.addEventListener("resize", updateMobile);
         return () => window.removeEventListener("resize", updateMobile);
     }, []);
 
-    const toggleSidebar = () => setOpen((prev) => !prev);
-    const toggleFullScreenSidebar = () => setIsFullScreen((prev) => !prev); // Expande solo el sidebar
+    const toggleSidebar = () => {
+        console.log("Toggle sidebar, estado actual:", open);
+        setOpen((prev) => !prev);
+    };
+    const toggleFullScreenSidebar = () => setIsFullScreen((prev) => !prev);
 
     const state = isClient ? (open ? "expanded" : "collapsed") : "collapsed";
 
+    const [openMobile, setOpenMobile] = React.useState(false);
     const contextValue = React.useMemo(() => ({
         state,
         open,
         setOpen,
         isMobile,
         toggleSidebar,
-        isFullScreen, // Agregado
-        toggleFullScreenSidebar // Agregado
-    }), [state, open, isMobile, isFullScreen]);
+        isFullScreen,
+        toggleFullScreenSidebar,
+        openMobile, // <-- Agregado
+        setOpenMobile // <-- Agregado
+    }), [state, open, isMobile, toggleSidebar, isFullScreen, openMobile]);
 
     return (
         <SidebarContext.Provider value={contextValue}>
             <TooltipProvider delayDuration={0}>
                 <div
                     style={{
-                        "--sidebar-width": isFullScreen ? "1300px" : open ? "250px" : "60px", // Expande el sidebar sin afectar la página
+                        "--sidebar-width": isMobile ? (open ? "50px" : "200px") : isFullScreen ? "1300px" : open ? "250px" : "60px",
+                        display: "flex", // Mantiene el sidebar siempre visible
+                        overflow: "visible", // Asegura que no esté oculto
                         transition: "width 0.3s ease-in-out",
                         ...style
                     }}
                     className={cn(
-                        "group/sidebar-wrapper flex min-h-svh transition-all duration-300",
+                        "group/sidebar-wrapper flex min-h-screen transition-all duration-300",
                         className
                     )}
                     ref={ref}
                     {...props}
                 >
+                    {console.log("🟢 Sidebar width:", isMobile ? (open ? "50px" : "200px") : isFullScreen ? "1300px" : open ? "250px" : "60px")}
                     {children}
                 </div>
             </TooltipProvider>
@@ -103,6 +115,7 @@ const SidebarProvider = React.forwardRef(({ children, className, style, ...props
 });
 
 SidebarProvider.displayName = "SidebarProvider";
+
 
 
 const Sidebar = React.forwardRef((
@@ -138,10 +151,10 @@ const Sidebar = React.forwardRef((
         <SheetContent
           data-sidebar="sidebar"
           data-mobile="true"
-          className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+          className="block md:hidden w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground"
           style={
             {
-              "--sidebar-width": SIDEBAR_WIDTH_MOBILE
+                "--sidebar-width": SIDEBAR_WIDTH_MOBILE
             }
           }
           side={side}>
@@ -165,7 +178,7 @@ const Sidebar = React.forwardRef((
       data-side={side}>
       {/* This is what handles the sidebar gap on desktop */}
       <div
-        className={cn(
+            className={cn(
           "relative w-[--sidebar-width] bg-transparent transition-[width] duration-200 ease-linear",
           "group-data-[collapsible=offcanvas]:w-0",
           "group-data-[side=right]:rotate-180",
@@ -209,6 +222,7 @@ const SidebarTrigger = React.forwardRef(({ className, onClick, ...props }, ref) 
       className={cn("h-7 w-7", className)}
       onClick={(event) => {
         onClick?.(event)
+          console.log("Click en botón de Sidebar");
         toggleSidebar()
       }}
       {...props}>
@@ -223,7 +237,7 @@ SidebarTrigger.displayName = "SidebarTrigger"
 
 const SidebarC = forwardRef(({ children, className = '', title }, ref) => {
     const bodyRef = useRef(null);
-    const { open, toggleSidebar, isFullScreen, toggleFullScreenSidebar } = useContext(SidebarContext);
+    const { open, isFullScreen, toggleFullScreenSidebar } = useContext(SidebarContext);
 
     useImperativeHandle(
         ref,
