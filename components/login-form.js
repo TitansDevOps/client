@@ -1,21 +1,18 @@
-"use client"
+"use client";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import styles from '../styles/globals.css';
+import styles from "../styles/globals.css";
 
-export function LoginForm({
-  className,
-  ...props
-}) {
+export function LoginForm({ className, ...props }) {
   const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar la contraseña
   const [password, setPassword] = useState(""); // Estado para almacenar la contraseña
 
   const togglePasswordVisibility = () => {
-    setShowPassword(prevState => !prevState); // Alternar la visibilidad de la contraseña
+    setShowPassword((prevState) => !prevState); // Alternar la visibilidad de la contraseña
   };
 
   return (
@@ -63,11 +60,15 @@ export function LoginForm({
                     onClick={togglePasswordVisibility}
                     className="absolute inset-y-0 right-0 flex items-center pr-3 text-blue-500 text-sm"
                   >
-                    {showPassword ? "Ocultar" : "Ver"} {/* Cambia el texto entre "Ver" y "Ocultar" */}
+                    {showPassword ? "Ocultar" : "Ver"}{" "}
+                    {/* Cambia el texto entre "Ver" y "Ocultar" */}
                   </button>
                 </div>
               </div>
-              <Button type="submit" className="w-full bg-orange-600 text-white hover:bg-orange-400">
+              <Button
+                type="submit"
+                className="w-full bg-orange-600 text-white hover:bg-orange-400"
+              >
                 Iniciar sesión
               </Button>
               {/* DOCUMENTAMOS EL BOTON DE INICIAR SESION CON GOOGLE */}
