@@ -8,8 +8,6 @@
   }
 }
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -79,6 +77,7 @@
 /* Elimina la barra de scroll en todos los navegadores */
 html, body {
   height: 100vh; /* Mantiene la altura completa */
+  
 }
 
   
