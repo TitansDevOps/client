@@ -36,10 +36,6 @@ function ModalExample() {
                 height="60vh"
             >
                 <p>This is the modal content.</p>
-                <p>This is the modal content.</p>
-                <p>This is the modal content.</p>
-                <p>This is the modal content.</p>
-                <p>This is the modal content.</p>
             </Modal>
         </div>
     );
