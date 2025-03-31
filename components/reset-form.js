@@ -11,7 +11,7 @@ import { apiPost } from "@/utils/api";
 import { ToastMessage } from "@/components/ui/toast";
 
 export function ResetForm({ className, ...props }) {
-  const router = useRouter(); // ✅ Ahora sí está definido
+  const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
@@ -35,23 +35,22 @@ export function ResetForm({ className, ...props }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await apiPost("/auth/reset-password", ResetForm);
+    const response = await apiPost("/auth/reset-password", ResetForm);
 
+    if (response.status === 200) {
       setToastData({
         message: response.data.message,
-        type: response.status === 200 ? "success" : "error",
+        type: "success",
       });
 
-      if (response.status === 200) {
-        setTimeout(() => {
-          router.push("/login");
-        }, 3000);
-      }
-    } catch (error) {
+      setTimeout(() => {
+        router.push("/login");
+      }, 1000);
+    } else {
       setToastData({
-        message: "Error al cambiar contraseña. Intente nuevamente",
+        message: response.data.message,
         type: "error",
+        onClose: () => {},
       });
     }
   };
