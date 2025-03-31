@@ -36,46 +36,6 @@ const SIDEBAR_TITLE = 'Sidebar Title';
                 <div id="section-id">
                     <h2>Section Content</h2>
                     <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2> <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2> <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
-                    <p>This is the content of the section you can scroll to.</p>
-                    <h2>Section Content</h2>
                 </div>
             </SidebarC>
         </div>
