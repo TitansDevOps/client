@@ -27,7 +27,7 @@ export function RegisterForm({ className, ...props }) {
     phone: ""
   });
   const [toastData, setToastData] = useState(null);
-  const [isFormValid, setIsValidForm] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const handleSubmitFullName = (e) => {
     const fullName = e.target.value;
@@ -67,9 +67,9 @@ export function RegisterForm({ className, ...props }) {
       registerForm.phone;
   
     if (allFieldsFilled && isEmailValid) {
-      setIsValidForm(true);
+      setIsFormValid(true);
     } else {
-      setIsValidForm(false);
+      setIsFormValid(false);
     }
   }, [registerForm, isEmailValid]);
   
@@ -77,13 +77,11 @@ export function RegisterForm({ className, ...props }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isFormValid) return;
-    setIsValidForm(false);
+    setIsFormValid(false);
     //FIXME::llamar al endpoint de registro de usuario - borrar el console.log el setToasData despues de validar la respuesta del request
       try {
-        console.log("Llamando al api:");
 
         const response = await apiPost("/auth/register", registerForm);
-        console.log(response);
 
         if (response.status === 201) {
           setToastData({
@@ -92,7 +90,7 @@ export function RegisterForm({ className, ...props }) {
             onClose: () => router.push("/login"),
           });
         } else {
-          setIsValidForm(false);
+          setIsFormValid(false);
           setToastData({
             message: response.data.message,
             type: "error",
@@ -101,8 +99,7 @@ export function RegisterForm({ className, ...props }) {
         }
   
       } catch (error) {
-        setIsValidForm(true);
-        console.log(error)
+        setIsFormValid(true);
         setToastData({
           message: "Error al registrar el usuario. Inténtalo nuevamente.",
           type: "error",
