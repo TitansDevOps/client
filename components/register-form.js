@@ -83,7 +83,7 @@ export function RegisterForm({ className, ...props }) {
           onClose: () => router.push("/login"),
         });
       } else {
-        setIsFormValid(false);
+        setIsFormValid(true);
         setToastData({
           message: response.data.message,
           type: "error",
