@@ -1,0 +1,127 @@
+:root {
+  --confirm-button-color: #007bff;
+  --modal-padding: 2vh 2vw;
+  --button-padding: 0.8vh 1.5vw;
+  --border-radius: 0.5vh;
+  --font-size-title: 1.5rem;
+  --font-size-button: 1rem;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease-in-out;
+  visibility: hidden;
+  z-index: 1000;
+}
+
+.modalOpen {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modalClosed {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.modalContent {
+  background: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.1);
+  padding: var(--modal-padding);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 90vw;
+  max-width: 35rem;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2vh;
+}
+
+.modalTitle {
+  font-size: var(--font-size-title);
+  font-weight: 600;
+  color: #333;
+}
+
+.modalCloseButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalBody {
+  flex: 1;
+  margin-bottom: 2vh;
+  overflow-y: auto;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1vw;
+  margin-top: auto;
+}
+
+.modalButton {
+  background: none;
+  border: none;
+  padding: var(--button-padding);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: var(--font-size-button);
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.modalButton:hover {
+  background-color: #0056b3;
+}
+
+.modalConfirmButton {
+  background: var(--confirm-button-color);
+}
+
+.modalCancelButton {
+  background: #6c757d;
+}
+
+@media (min-width: 768px) {
+  .modalContent {
+    width: 70vw;
+    max-width: 20rem;
+  }
+
+  .modalTitle {
+    font-size: 1.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .modalContent {
+    width: 50vw;
+    max-width: 35rem;
+  }
+
+  .modalTitle {
+    font-size: 2rem;
+  }
+}
