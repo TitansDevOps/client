@@ -17,8 +17,6 @@ import { Input } from "@/components/ui/input";
 import { ToastMessage } from "@/components/ui/toast";
 
 export function RegisterForm({ className, ...props }) {
-  const router = useRouter();
-
   const [registerForm, setRegisterForm] = useState({
     fullName: "",
     email: "",
