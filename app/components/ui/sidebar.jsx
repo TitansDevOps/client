@@ -28,7 +28,7 @@ import {
 const SIDEBAR_COOKIE_NAME = "sidxebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = "16rem"
-const SIDEBAR_WIDTH_MOBILE = "200px"
+const SIDEBAR_WIDTH_MOBILE = "250px"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
@@ -46,6 +46,7 @@ const SidebarProvider = React.forwardRef(({ children, className, style, ...props
     const [isClient, setIsClient] = React.useState(false);
     const [isMobile, setIsMobile] = React.useState(false);
     const [open, setOpen] = React.useState(false);
+    const [openMobile, setOpenMobile] = React.useState(false);
     const [isFullScreen, setIsFullScreen] = React.useState(false);
 
     React.useEffect(() => {
@@ -57,9 +58,12 @@ const SidebarProvider = React.forwardRef(({ children, className, style, ...props
 
         const updateMobile = () => {
             const width = window.innerWidth;
-            const mobile = width <= 640;
+            const mobile = width <= 768;
             setIsMobile(mobile);
-            console.log("📱 isMobile:", mobile, "Ancho:", width);
+
+            if (!mobile) {
+                setOpenMobile(false); // Si pasamos a escritorio, cerramos el sidebar móvil
+            }
         };
 
         updateMobile();
@@ -68,14 +72,23 @@ const SidebarProvider = React.forwardRef(({ children, className, style, ...props
     }, []);
 
     const toggleSidebar = () => {
-        console.log("Toggle sidebar, estado actual:", open);
-        setOpen((prev) => !prev);
+        if (isMobile) {
+            setOpenMobile((prev) => {
+                console.log("📱 toggleSidebar en móvil, nuevo estado:", !prev);
+                return !prev;
+            });
+        } else {
+            setOpen((prev) => {
+                console.log("🖥️ toggleSidebar en escritorio, nuevo estado:", !prev);
+                return !prev;
+            });
+        }
     };
+
     const toggleFullScreenSidebar = () => setIsFullScreen((prev) => !prev);
 
-    const state = isClient ? (open ? "expanded" : "collapsed") : "collapsed";
+    const state = isClient ? (isMobile ? (openMobile ? "expanded" : "collapsed") : (open ? "expanded" : "collapsed")) : "collapsed";
 
-    const [openMobile, setOpenMobile] = React.useState(false);
     const contextValue = React.useMemo(() => ({
         state,
         open,
@@ -84,18 +97,18 @@ const SidebarProvider = React.forwardRef(({ children, className, style, ...props
         toggleSidebar,
         isFullScreen,
         toggleFullScreenSidebar,
-        openMobile, // <-- Agregado
-        setOpenMobile // <-- Agregado
-    }), [state, open, isMobile, toggleSidebar, isFullScreen, openMobile]);
+        openMobile,
+        setOpenMobile
+    }), [state, open, isMobile, isFullScreen, openMobile]);
 
     return (
         <SidebarContext.Provider value={contextValue}>
             <TooltipProvider delayDuration={0}>
                 <div
                     style={{
-                        "--sidebar-width": isMobile ? (open ? "50px" : "200px") : isFullScreen ? "1300px" : open ? "250px" : "60px",
-                        display: "flex", // Mantiene el sidebar siempre visible
-                        overflow: "visible", // Asegura que no esté oculto
+                        "--sidebar-width": isMobile ? (openMobile ? "200px" : "50px") : isFullScreen ? "1300px" : open ? "250px" : "60px",
+                        display: "flex",
+                        overflow: "visible",
                         transition: "width 0.3s ease-in-out",
                         ...style
                     }}
@@ -106,7 +119,7 @@ const SidebarProvider = React.forwardRef(({ children, className, style, ...props
                     ref={ref}
                     {...props}
                 >
-                    {console.log("🟢 Sidebar width:", isMobile ? (open ? "50px" : "200px") : isFullScreen ? "1300px" : open ? "250px" : "60px")}
+                    {console.log("🟢 Sidebar width:", isMobile ? (openMobile ? "200px" : "50px") : isFullScreen ? "1300px" : open ? "250px" : "60px")}
                     {children}
                 </div>
             </TooltipProvider>
@@ -114,9 +127,8 @@ const SidebarProvider = React.forwardRef(({ children, className, style, ...props
     );
 });
 
+
 SidebarProvider.displayName = "SidebarProvider";
-
-
 
 const Sidebar = React.forwardRef((
   {
@@ -144,8 +156,12 @@ const Sidebar = React.forwardRef((
       </div>
     );
   }
+    if (isMobile && openMobile === undefined) {
+        console.log("🔄 Forzando openMobile en móvil");
+        setOpenMobile(false); // Cambiar a false en lugar de true
+    }
 
-  if (isMobile) {
+    if (isMobile) {
     return (
       <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
         <SheetContent
@@ -211,26 +227,37 @@ const Sidebar = React.forwardRef((
 Sidebar.displayName = "Sidebar"
 
 const SidebarTrigger = React.forwardRef(({ className, onClick, ...props }, ref) => {
-  const { toggleSidebar } = useSidebar()
+    const { toggleSidebar, open, setOpenMobile, openMobile, isMobile } = useSidebar();
 
-  return (
-    <Button
-      ref={ref}
-      data-sidebar="trigger"
-      variant="ghost"
-      size="icon"
-      className={cn("h-7 w-7", className)}
-      onClick={(event) => {
-        onClick?.(event)
-          console.log("Click en botón de Sidebar");
-        toggleSidebar()
-      }}
-      {...props}>
-          <Menu />
-      <span className="sr-only">Toggle Sidebar</span>
-    </Button>
-  );
-})
+    return (
+        <Button
+            ref={ref}
+            data-sidebar="trigger"
+            variant="ghost"
+            size="icon"
+            className={cn("h-7 w-7", className)}
+            onClick={(event) => {
+                event.preventDefault();
+                console.log("🔘 Sidebar antes:", { open, openMobile });
+
+                if (isMobile) {
+                    setOpenMobile((prev) => !prev); // ✅ Ahora sí alterna
+                    console.log("📱 Sidebar móvil después:", !openMobile);
+                } else {
+                    toggleSidebar();
+                    console.log("🖥️ Sidebar escritorio después:", !open);
+                }
+
+                onClick?.(event);
+            }}
+            {...props}
+        >
+            <Menu />
+            <span className="sr-only">Toggle Sidebar</span>
+        </Button>
+    );
+});
+
 SidebarTrigger.displayName = "SidebarTrigger"
 
 
