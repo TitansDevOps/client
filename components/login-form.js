@@ -22,7 +22,7 @@ export function LoginForm({ className, ...props }) {
 
 
   useEffect(() => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     setIsFormValid(emailRegex.test(email) && password.length > 0);
   }, [email, password]);
   
@@ -37,7 +37,7 @@ export function LoginForm({ className, ...props }) {
     // Marcar que el usuario ha intentado enviar el formulario
     if (!hasSubmitted) setHasSubmitted(true);
   
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const isValid = emailRegex.test(email) && password.length > 0;
   
     // Si los datos son inválidos y la alerta aún NO se ha mostrado en este intento
