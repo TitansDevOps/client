@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Dog } from "lucide-react"
-import { NavMain } from "@/app/components/nav-main"
+import { NavMain } from "@/app/components/ui/sidebar/nav-main"
 //import { SidebarOptInForm } from "@/app/components/sidebar-opt-in-form"
 import {
   Sidebar,
@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
   SidebarC
-} from "@/app/components/ui/sidebar"
+} from "@/app/components/ui/sidebar/sidebar"
 
 // This is sample data.
 const data = {
