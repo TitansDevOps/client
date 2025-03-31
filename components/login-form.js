@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { apiPost } from "@/utils/api"; 
+import { apiPost } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { ToastMessage } from "@/components/ui/toast";
 import styles from "../styles/globals.css";
+
+import { useAuth } from "@/app/context/AuthContext";
 
 export function LoginForm({ className, ...props }) {
   const [email, setEmail] = useState("");
@@ -19,11 +21,13 @@ export function LoginForm({ className, ...props }) {
   const [toastData, setToastData] = useState(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
+  const router = useRouter();
+  const { login } = useAuth();
+
   useEffect(() => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     setIsFormValid(emailRegex.test(email) && password.length > 0);
   }, [email, password]);
-  
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
@@ -31,42 +35,39 @@ export function LoginForm({ className, ...props }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Marcar que el usuario ha intentado enviar el formulario
+
     if (!hasSubmitted) setHasSubmitted(true);
-  
+
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const isValid = emailRegex.test(email) && password.length > 0;
-  
-    // Si los datos son inválidos y la alerta aún NO se ha mostrado en este intento
+
     if (!isValid && !toastData) {
       setToastData({
         message: "Por favor ingresa un email válido y una contraseña.",
         type: "error",
-        onClose: () => setToastData(null), // Cierra la alerta manualmente
+        onClose: () => setToastData(null),
       });
       return;
     }
-  
-    // Si la alerta ya está activa, NO volver a mostrarla hasta el próximo intento de envío
+
     if (!isValid) {
       return;
     }
-  
+
     setIsLoading(true);
-  
+
     try {
-      console.log("Llamando al API...");
       const response = await apiPost("/auth/login", { email, password });
-  
+
       if (response.status === 200) {
+        login(response.data.body.token);
         setToastData({
           message: response.data.message,
           type: "success",
-          onClose: () => {router.push("/dashboard");
+          onClose: () => {
+            router.push("/dashboard");
           },
         });
-        localStorage.setItem("token", response.data.access_token);
       } else {
         setToastData({
           message: response.data.message,
@@ -84,7 +85,7 @@ export function LoginForm({ className, ...props }) {
       setIsLoading(false);
     }
   };
-    
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       {toastData && (
@@ -113,7 +114,11 @@ export function LoginForm({ className, ...props }) {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={hasSubmitted && !isFormValid && email.length > 0 ? "border-red-500" : ""}
+                  className={
+                    hasSubmitted && !isFormValid && email.length > 0
+                      ? "border-red-500"
+                      : ""
+                  }
                 />
               </div>
               <div className="grid gap-2">
@@ -133,7 +138,11 @@ export function LoginForm({ className, ...props }) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className={hasSubmitted && !isFormValid && email.length > 0 ? "border-red-500" : ""}
+                    className={
+                      hasSubmitted && !isFormValid && email.length > 0
+                        ? "border-red-500"
+                        : ""
+                    }
                   />
                   <button
                     type="button"
