@@ -18,8 +18,6 @@ export function LoginForm({ className, ...props }) {
   const [isLoading, setIsLoading] = useState(false);
   const [toastData, setToastData] = useState(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const router = useRouter();
-
 
   useEffect(() => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -60,7 +58,6 @@ export function LoginForm({ className, ...props }) {
     try {
       console.log("Llamando al API...");
       const response = await apiPost("/auth/login", { email, password });
-      console.log(response);
   
       if (response.status === 200) {
         setToastData({
@@ -78,7 +75,6 @@ export function LoginForm({ className, ...props }) {
         });
       }
     } catch (error) {
-      console.log(error);
       setToastData({
         message: "Error al iniciar sesión. Intente nuevamente.",
         type: "error",

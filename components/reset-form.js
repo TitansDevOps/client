@@ -36,9 +36,7 @@ export function ResetForm({ className, ...props }) {
     e.preventDefault();
 
     try {
-      console.log("Llamando la API...");
       const response = await apiPost("/auth/reset-password", ResetForm);
-      console.log(response);
 
       setToastData({
         message: response.data.message,
@@ -51,7 +49,6 @@ export function ResetForm({ className, ...props }) {
         }, 3000);
       }
     } catch (error) {
-      console.log(error);
       setToastData({
         message: "Error al cambiar contraseña. Intente nuevamente",
         type: "error",
