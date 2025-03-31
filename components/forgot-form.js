@@ -12,7 +12,6 @@ import { useRouter } from "next/navigation";
 import { apiPost } from "@/utils/api";
 import { ToastMessage } from "@/components/ui/toast";
 
-
 export function ForgotForm({ className, ...props }) {
   const [email, setEmail] = useState("");
   const [toastData, setToastData] = useState(null);
@@ -21,9 +20,9 @@ export function ForgotForm({ className, ...props }) {
     e.preventDefault();
 
     try {
-      const response = await apiPost("/auth/forgot-password", {email})
+      const response = await apiPost("/auth/forgot-password", { email });
 
-      if(response.status === 200) {
+      if (response.status === 200) {
         setToastData({
           message: response.data.message,
           type: "success",
@@ -40,7 +39,7 @@ export function ForgotForm({ className, ...props }) {
       setToastData({
         message: "Error al enviar el correo. Intente nuevamente",
         type: "error",
-        onClose: () => {}, 
+        onClose: () => {},
       });
     }
   };
