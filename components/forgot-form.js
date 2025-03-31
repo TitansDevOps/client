@@ -9,20 +9,55 @@ import { Label } from "@/components/ui/label";
 import styles from "../styles/globals.css";
 import { EmailForm } from "./emailForm";
 import { useRouter } from "next/navigation";
+import { apiPost } from "@/utils/api";
+import { ToastMessage } from "@/components/ui/toast";
+
 
 export function ForgotForm({ className, ...props }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [toastData, setToastData] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //FIXME::llamar a la función de validación de correo electrónico endpoint
-    console.log("Email ingresado:", email);
-    router.push("/reset");
+
+    try {
+      console.log("Llamando la api...")
+      const response = await apiPost("/auth/forgot-password", {email})
+      console.log(response)
+
+      if(response.status === 200) {
+        setToastData({
+          message: response.data.message,
+          type: "success",
+          onClose: () => {},
+        });
+      } else {
+        setToastData({
+          message: response.data.message,
+          type: "error",
+          onClose: () => {},
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      setToastData({
+        message: "Error al enviar el correo. Intente nuevamente",
+        type: "error",
+        onClose: () => {}, 
+      });
+    }
   };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      {toastData && (
+        <ToastMessage
+          message={toastData.message}
+          type={toastData.type}
+          onClose={toastData.onClose}
+        />
+      )}
       <Card className="overflow-hidden">
         <CardContent className="grid p-0 md:grid-cols-2">
           <form className="p-6 md:p-8" onSubmit={handleSubmit}>
