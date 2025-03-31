@@ -1,28 +1,35 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import styles from "../styles/globals.css";
 import { AuthForm, PasswordForm } from "./passwordForm";
 import { EmailForm } from "./emailForm";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { apiPost } from "@/utils/api"; 
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+
+
 
 import { ToastMessage } from "@/components/ui/toast";
 
 export function RegisterForm({ className, ...props }) {
-  const router = useRouter();
-
   const [registerForm, setRegisterForm] = useState({
+    fullName: "",
     email: "",
     password: "",
+    address: "",
+    phone: ""
   });
   const [toastData, setToastData] = useState(null);
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  const handleSubmitPassword = (password) => {
-    console.log("password", password);
-    setRegisterForm({ ...registerForm, password });
+  const handleSubmitFullName = (e) => {
+    const fullName = e.target.value;
+    setRegisterForm({ ...registerForm, fullName });
   };
 
   const handleSubmitEmail = (email) => {
@@ -30,32 +37,74 @@ export function RegisterForm({ className, ...props }) {
     setRegisterForm({ ...registerForm, email });
   };
 
+  const handleSubmitPassword = (password) => {
+    console.log("password", password);
+    setRegisterForm({ ...registerForm, password });
+  };
+
+  const handleSubmitAddress = (e) => {
+    const address = e.target.value;
+    setRegisterForm({ ...registerForm, address });
+  };
+
+    const handleSubmitPhone = (e) => {
+      const phone = e.target.value;
+    setRegisterForm({ ...registerForm, phone });
+  };
+
+
   const isEmailValid = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
     registerForm.email,
   );
-  const isFormValid = registerForm.password && isEmailValid;
-
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const allFieldsFilled =
+      registerForm.fullName &&
+      registerForm.email &&
+      registerForm.password &&
+      registerForm.address &&
+      registerForm.phone;
+  
+    if (allFieldsFilled && isEmailValid) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [registerForm, isEmailValid]);
+  
+    
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isFormValid) return;
-
+    setIsFormValid(false);
     //FIXME::llamar al endpoint de registro de usuario - borrar el console.log el setToasData despues de validar la respuesta del request
-    console.log(registerForm.email, registerForm.password);
+      try {
 
-    if (1 == 3) {
-      setToastData({
-        message: "Usuario registrado con éxito",
-        type: "success",
-        onClose: () => router.push("/login"),
-      });
-    } else {
-      setToastData({
-        message: "Error al registrar el usuario",
-        type: "error",
-        onClose: () => router.push("/login"),
-      });
-    }
-  };
+        const response = await apiPost("/auth/register", registerForm);
+
+        if (response.status === 201) {
+          setToastData({
+            message: response.data.message,
+            type: "success",
+            onClose: () => router.push("/login"),
+          });
+        } else {
+          setIsFormValid(false);
+          setToastData({
+            message: response.data.message,
+            type: "error",
+            onClose: () => {},
+          });
+        }
+  
+      } catch (error) {
+        setIsFormValid(true);
+        setToastData({
+          message: "Error al registrar el usuario. Inténtalo nuevamente.",
+          type: "error",
+          onClose: () => {},
+        });
+      }
+    };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -76,8 +125,49 @@ export function RegisterForm({ className, ...props }) {
                   ¡Registrate y adopta!
                 </p>
               </div>
+
+               {/* Full Name */}
+              <div className="grid gap-2">
+                <Label htmlFor="fullname">Nombre completo</Label>
+                <Input
+                  id="fullname"
+                  type="text"
+                  placeholder="Juan Pérez"
+                  required
+                  value={registerForm.fullName}
+                  onChange={handleSubmitFullName}
+                />
+              </div>
+
+
               <EmailForm onSubmit={handleSubmitEmail} />
               <PasswordForm onSubmit={handleSubmitPassword} />
+              
+              {/* Address */}
+              <div className="grid gap-2">
+                <Label htmlFor="address">Dirección</Label>
+                <Input
+                  id="address"
+                  type="text"
+                  placeholder="Calle 123, Ciudad"
+                  required
+                  value={registerForm.address}
+                  onChange={handleSubmitAddress  }
+                />
+              </div>
+
+              {/* Phone */}
+              <div className="grid gap-2">
+                <Label htmlFor="phone">Teléfono</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="1234567890"
+                  required
+                  value={registerForm.phone}
+                  onChange={handleSubmitPhone}
+                />
+              </div>
 
               <Button
                 type="submit"
