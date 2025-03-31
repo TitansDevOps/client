@@ -1,7 +1,6 @@
 "use client";
 import { useState } from 'react';
-import Modal from '/app/components/Modal';
-
+import Modal from '@/components/Modal';
 
 function ModalExample() {
     const [isModalOpen, setIsModalOpen] = useState(false);

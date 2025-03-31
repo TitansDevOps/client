@@ -7,23 +7,23 @@ import { useRef, useImperativeHandle, forwardRef, useContext } from 'react';
 import { ArrowsOut, ArrowsIn } from 'phosphor-react';
 import PropTypes from "prop-types";
 import { cn } from "@/lib/utils"
-import { Button } from "@/app/components/ui/button"
-import { Input } from "@/app/components/ui/input"
-import { Separator } from "@/app/components/ui/separator"
+import { Button } from "@/app/components/ui/sidebar/button"
+import { Input } from "@/app/components/ui/sidebar/input"
+import { Separator } from "@/app/components/ui/sidebar/separator"
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/app/components/ui/sheet"
-import { Skeleton } from "@/app/components/ui/skeleton"
+} from "@/app/components/ui/sidebar/sheet"
+import { Skeleton } from "@/app/components/ui/sidebar/skeleton"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/app/components/ui/tooltip"
+} from "@/app/components/ui/sidebar/tooltip"
 
 const SIDEBAR_COOKIE_NAME = "sidxebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
