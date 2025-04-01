@@ -529,5 +529,16 @@
   text-align: center;
 }
   
-  
-
+/* globals.css */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+body {
+  background-color: #dbeafe; /* Azul cielo claro */
+}
