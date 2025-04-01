@@ -1,22 +1,30 @@
-"use client";
-import { useRouter } from "next/navigation";
+'use client';
+import Navigation from "./components/Navigation";
+import HeroSection from "./components/HeroSection";
+import PartnersSection from "./components/PartnersSection";
+import BenefitsSection from "./components/BenefitsSection";
+import PetCardsSection from "./components/PetCardsSection";
+import AboutUsSection from "./components/AboutUsSection";
+import ContactSection from "./components/ContactSection";
+import Footer from "./components/Footer";
+import TestimonialsSection from "./components/TestimonialsSection";
 
-export default function Landing() {
-  const router = useRouter();
-
-  const handleLogout = () => {
-    router.push("/login");
-  };
-
+export default function LandingPage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-black">
-      <h1 className="text-3xl font-bold mb-4">Bienvenido al Dashboard 🎉</h1>
-      <button
-        onClick={handleLogout}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-      >
-        Login
-      </button>
+    <div className="relative">
+      <Navigation />
+      
+      <main className="relative z-10">
+        <HeroSection />
+        <PartnersSection />
+        <BenefitsSection />
+        <TestimonialsSection />
+        <PetCardsSection />
+        <AboutUsSection />
+        <ContactSection />
+      </main>
+
+      <Footer />
     </div>
   );
 }
