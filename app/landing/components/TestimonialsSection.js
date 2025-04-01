@@ -78,7 +78,7 @@ export default function TestimonialsSection() {
               >
                 <div className="bg-blue-50 p-8 rounded-xl shadow-md h-full flex flex-col">
                   <Quote className="text-blue-400 mb-4" size={24} />
-                  <p className="text-lg italic text-gray-700 mb-6 flex-grow">"{testimonial.quote}"</p>
+                  <p className="text-lg italic text-gray-700 mb-6 flex-grow">&quot;{testimonial.quote}&quot;</p>
                   <div className="flex items-center">
                     <img 
                       src={testimonial.avatar} 

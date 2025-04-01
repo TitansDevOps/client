@@ -2,10 +2,11 @@
 
 
 module.exports = {
-  content:[
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
+  darkMode: ["class"],
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -57,7 +58,7 @@ module.exports = {
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
+          DEFAULT: "hsl(199.4 95.5% 73.9%)",
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
@@ -146,6 +147,30 @@ module.exports = {
         xsmall: "var(--xsmall)",
         xxlarge: "var(--xxlarge)",
         xxsmall: "var(--xxsmall)",
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        chart: {
+          1: "hsl(var(--chart-1))",
+          2: "hsl(var(--chart-2))",
+          3: "hsl(var(--chart-3))",
+          4: "hsl(var(--chart-4))",
+          5: "hsl(var(--chart-5))",
+        },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -169,8 +194,8 @@ module.exports = {
     },
     container: { center: true, padding: "2rem", screens: { "2xl": "1400px" } },
   },
-  plugins: [],
   darkMode: ["class"],
+  plugins: [require("tailwindcss-animate")],
 };
 
 
