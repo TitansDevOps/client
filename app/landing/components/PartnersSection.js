@@ -144,7 +144,7 @@ export default function PartnersSection() {
                   </svg>
                 ))}
               </div>
-              <p className="text-gray-600 italic mb-4">"{testimonial.quote}"</p>
+              <p className="text-gray-600 italic mb-4">&quot;{testimonial.quote}&quot;</p>
               <div>
                 <h4 className="font-bold text-gray-800">{testimonial.author}</h4>
                 <p className="text-blue-600 text-sm">{testimonial.role}</p>

@@ -3,7 +3,16 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
+import { useRouter } from "next/navigation";
+
 export default function Header() {
+
+  const router = useRouter();
+
+  const handleLogin = () => {
+    router.push("/login");
+  };
+  
   return (
     <motion.header 
       initial={{ opacity: 0, y: -20 }}
@@ -61,7 +70,8 @@ export default function Header() {
             whileTap={{ scale: 0.95 }}
             className="ml-8"
           >
-            <button className="flex items-center px-5 py-3 rounded-lg font-medium bg-gradient-to-r from-orange-500 to-orange-400 text-white shadow-md hover:shadow-lg transition-all">
+            <button className="flex items-center px-5 py-3 rounded-lg font-medium bg-gradient-to-r from-orange-500 to-orange-400 text-white shadow-md hover:shadow-lg transition-all"
+            onClick={handleLogin}>
               Adoptar
               <motion.span
                 whileHover={{ x: 3 }}
