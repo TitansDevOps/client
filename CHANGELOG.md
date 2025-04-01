@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/TitansDevOps/client/compare/v1.1.1...v1.2.0) (2025-04-01)
+
+
+### Features
+
+* landing ([0e38b43](https://github.com/TitansDevOps/client/commit/0e38b43ec91288df620ab2e59696f7fde8ea1785))
+* landing ([0e38b43](https://github.com/TitansDevOps/client/commit/0e38b43ec91288df620ab2e59696f7fde8ea1785))
+
 ## [1.1.1](https://github.com/TitansDevOps/client/compare/v1.1.0...v1.1.1) (2025-03-31)
 
 
