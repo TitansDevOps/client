@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/TitansDevOps/client/compare/v1.1.0...v1.1.1) (2025-03-31)
+
+
+### Bug Fixes
+
+* post register error page locked ([9c20a29](https://github.com/TitansDevOps/client/commit/9c20a299e84addf070e0fdf083d286f57d9c597b))
+* Update .env ([b54f653](https://github.com/TitansDevOps/client/commit/b54f6533efafa8b08f2abc72d4f130b8763d09e8))
+
 ## [1.1.0](https://github.com/TitansDevOps/client/compare/v1.0.0...v1.1.0) (2025-03-31)
 
 
