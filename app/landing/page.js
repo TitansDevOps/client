@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Navigation from "./components/Navigation";
 import HeroSection from "./components/HeroSection";
 import PartnersSection from "./components/PartnersSection";
@@ -13,7 +13,7 @@ export default function LandingPage() {
   return (
     <div className="relative">
       <Navigation />
-      
+
       <main className="relative z-10">
         <HeroSection />
         <PartnersSection />

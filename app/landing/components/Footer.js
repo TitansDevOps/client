@@ -9,29 +9,62 @@ export default function Footer() {
           <div>
             <div className="flex items-center mb-4">
               <span className="h-3 w-3 bg-red-500 rounded-full mr-2"></span>
-              <span className="font-bold text-lg text-gray-800">ADOPCIÓN DE MASCOTAS</span>
+              <span className="font-bold text-lg text-gray-800">
+                ADOPCIÓN DE MASCOTAS
+              </span>
             </div>
             <p className="text-gray-700 mb-4 text-sm">
-              Conectamos animales que necesitan un hogar con personas dispuestas a brindarles amor y cuidados.
+              Conectamos animales que necesitan un hogar con personas dispuestas
+              a brindarles amor y cuidados.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="bg-white p-2 rounded-full transform transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3V2z" fill="#3B5998" />
+              <a
+                href="#"
+                className="bg-white p-2 rounded-full transform transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3V2z"
+                    fill="#3B5998"
+                  />
                 </svg>
               </a>
-              
-              <a href="#" className="bg-white p-2 rounded-full transform transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+              <a
+                href="#"
+                className="bg-white p-2 rounded-full transform transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M12 2a10 10 0 100 20 10 10 0 000-20zm5 7.5h-1.5c-.54 0-1.02.36-1.02.77v1.73h2.5L16.5 14h-2v5h-2v-5H10v-2h2.5v-2c0-1.66 1.34-3 3-3H17v2.5z"
                     fill="#E4405F"
                   />
                 </svg>
               </a>
-              
-              <a href="#" className="bg-white p-2 rounded-full transform transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+              <a
+                href="#"
+                className="bg-white p-2 rounded-full transform transition-all duration-300 hover:scale-110 shadow-md hover:shadow-lg"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M17.498 21.02h-11c-3.866 0-7-3.134-7-7v-4c0-3.866 3.134-7 7-7h11c3.866 0 7 3.134 7 7v4c0 3.866-3.134 7-7 7z"
                     fill="#25D366"
@@ -86,7 +119,8 @@ export default function Footer() {
         <div className="border-t border-blue-200 pt-6 mt-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-700 text-sm mb-4 md:mb-0">
-              © {new Date().getFullYear()} Adopción de Mascotas. Todos los derechos reservados.
+              © {new Date().getFullYear()} Adopción de Mascotas. Todos los
+              derechos reservados.
             </p>
             <div className="flex space-x-4 text-xs text-gray-700">
               <a href="#" className="hover:text-gray-900 transition-colors">

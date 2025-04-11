@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-import styles from "../styles/globals.css";
-import { PasswordForm } from "./passwordForm";
+import styles from "../../../styles/globals.css";
+import { PasswordForm } from "@/app/components/auth/passwordForm";
 import { apiPost } from "@/utils/api";
 import { ToastMessage } from "@/components/ui/toast";
 
