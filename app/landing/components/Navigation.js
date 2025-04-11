@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
@@ -6,15 +6,14 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 export default function Header() {
-
   const router = useRouter();
 
   const handleLogin = () => {
     router.push("/login");
   };
-  
+
   return (
-    <motion.header 
+    <motion.header
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -22,13 +21,12 @@ export default function Header() {
     >
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center max-w-6xl mx-auto">
-          
           {/* Logo con animación sutil */}
-          <motion.div 
+          <motion.div
             whileHover={{ scale: 1.02 }}
             className="flex items-center space-x-3"
           >
-            <motion.span 
+            <motion.span
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.5 }}
               className="h-3 w-3 bg-red-500 rounded-full"
@@ -40,7 +38,7 @@ export default function Header() {
 
           {/* Menú con animaciones hover */}
           <nav className="hidden md:flex items-center space-x-8 ml-12">
-            {['help', 'stories', 'about', 'contact'].map((item, index) => (
+            {["help", "stories", "about", "contact"].map((item, index) => (
               <motion.div
                 key={item}
                 initial={{ opacity: 0, x: -10 }}
@@ -52,10 +50,10 @@ export default function Header() {
                   href={`#${item}`}
                   className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
                 >
-                  {item === 'help' && 'Cómo ayudar'}
-                  {item === 'stories' && 'Historias'}
-                  {item === 'about' && 'Nosotros'}
-                  {item === 'contact' && 'Contacto'}
+                  {item === "help" && "Cómo ayudar"}
+                  {item === "stories" && "Historias"}
+                  {item === "about" && "Nosotros"}
+                  {item === "contact" && "Contacto"}
                 </Link>
               </motion.div>
             ))}
@@ -70,12 +68,14 @@ export default function Header() {
             whileTap={{ scale: 0.95 }}
             className="ml-8"
           >
-            <button className="flex items-center px-5 py-3 rounded-lg font-medium bg-gradient-to-r from-orange-500 to-orange-400 text-white shadow-md hover:shadow-lg transition-all"
-            onClick={handleLogin}>
+            <button
+              className="flex items-center px-5 py-3 rounded-lg font-medium bg-gradient-to-r from-orange-500 to-orange-400 text-white shadow-md hover:shadow-lg transition-all"
+              onClick={handleLogin}
+            >
               Adoptar
               <motion.span
                 whileHover={{ x: 3 }}
-                transition={{ type: 'spring', stiffness: 300 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
                 <ArrowRight className="ml-2" size={18} />
               </motion.span>

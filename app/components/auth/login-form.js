@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { apiPost } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { ToastMessage } from "@/components/ui/toast";
-import styles from "../styles/globals.css";
+import styles from "../../../styles/globals.css";
 
 import { useAuth } from "@/app/context/AuthContext";
 

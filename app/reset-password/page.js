@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { ResetForm } from "@/components/reset-form";
+import { ResetForm } from "@/app/components/auth/reset-form";
 
 export default function ResetPage() {
   return (

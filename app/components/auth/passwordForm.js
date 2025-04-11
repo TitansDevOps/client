@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import styles from "../styles/globals.css";
+import styles from "../../../styles/globals.css";
 
 export const PasswordForm = ({ onSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);

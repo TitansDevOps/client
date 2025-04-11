@@ -1,8 +1,8 @@
-'use client';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import PetCard from './PetCard';
+"use client";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import PetCard from "./PetCard";
 
 const pets = [
   {
@@ -13,7 +13,7 @@ const pets = [
     breed: "Labrador",
     location: "Bogotá",
     image: "/pets/dog1.jpg",
-    type: "perro"
+    type: "perro",
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ const pets = [
     breed: "Siamés",
     location: "Medellín",
     image: "/pets/cat1.jpg",
-    type: "gato"
+    type: "gato",
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ const pets = [
     breed: "Conejo Holandés",
     location: "Cali",
     image: "/pets/rabbit1.jpg",
-    type: "conejo"
+    type: "conejo",
   },
   {
     id: 4,
@@ -43,7 +43,7 @@ const pets = [
     breed: "Bulldog",
     location: "Barranquilla",
     image: "/pets/dog2.jpg",
-    type: "perro"
+    type: "perro",
   },
   {
     id: 5,
@@ -53,7 +53,7 @@ const pets = [
     breed: "Persa",
     location: "Cartagena",
     image: "/pets/cat2.jpg",
-    type: "gato"
+    type: "gato",
   },
   {
     id: 6,
@@ -63,8 +63,8 @@ const pets = [
     breed: "Conejo Enano",
     location: "Bucaramanga",
     image: "/pets/rabbit2.jpg",
-    type: "conejo"
-  }
+    type: "conejo",
+  },
 ];
 export default function PetCardsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -94,17 +94,17 @@ export default function PetCardsSection() {
   useEffect(() => {
     if (!isAutoPlaying) return;
     const timer = setTimeout(() => {
-      setCurrentIndex(prev => (prev + 1) % pets.length);
+      setCurrentIndex((prev) => (prev + 1) % pets.length);
     }, 5000);
     return () => clearTimeout(timer);
   }, [currentIndex, isAutoPlaying]);
 
   const nextPet = () => {
-    setCurrentIndex(prev => (prev + 1) % pets.length);
+    setCurrentIndex((prev) => (prev + 1) % pets.length);
   };
 
   const prevPet = () => {
-    setCurrentIndex(prev => (prev - 1 + pets.length) % pets.length);
+    setCurrentIndex((prev) => (prev - 1 + pets.length) % pets.length);
   };
 
   return (
@@ -126,7 +126,7 @@ export default function PetCardsSection() {
         </motion.div>
 
         {/* Carrusel */}
-        <div 
+        <div
           className="relative max-w-xs md:max-w-md lg:max-w-2xl mx-auto"
           onMouseEnter={() => setIsAutoPlaying(false)}
           onMouseLeave={() => setIsAutoPlaying(true)}
@@ -135,7 +135,7 @@ export default function PetCardsSection() {
           onTouchEnd={handleTouchEnd}
         >
           {/* Flechas de navegación (solo desktop) */}
-          <button 
+          <button
             onClick={prevPet}
             className="hidden md:block absolute -left-12 lg:-left-16 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-sm z-10 hover:bg-gray-50 transition-colors"
             aria-label="Mascota anterior"
@@ -156,7 +156,9 @@ export default function PetCardsSection() {
                   transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
                   className="absolute left-0 w-48 md:w-56 z-10"
                 >
-                  <PetCard pet={pets[(currentIndex - 1 + pets.length) % pets.length]} />
+                  <PetCard
+                    pet={pets[(currentIndex - 1 + pets.length) % pets.length]}
+                  />
                 </motion.div>
 
                 {/* Tarjeta principal */}
@@ -186,7 +188,7 @@ export default function PetCardsSection() {
             </div>
           </div>
 
-          <button 
+          <button
             onClick={nextPet}
             className="hidden md:block absolute -right-12 lg:-right-16 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-sm z-10 hover:bg-gray-50 transition-colors"
             aria-label="Siguiente mascota"
@@ -201,7 +203,7 @@ export default function PetCardsSection() {
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
-              className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all ${index === currentIndex ? 'bg-blue-600 w-4 md:w-6' : 'bg-gray-300'}`}
+              className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all ${index === currentIndex ? "bg-blue-600 w-4 md:w-6" : "bg-gray-300"}`}
               aria-label={`Ir a mascota ${index + 1}`}
             />
           ))}

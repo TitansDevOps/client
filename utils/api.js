@@ -11,6 +11,8 @@ export const apiUrl = (path) => {
 };
 
 export const apiRequest = async (method, path, data) => {
+  const token = localStorage.getItem("token");
+  console.log(token);
   try {
     const response = await axios({
       method,
@@ -18,6 +20,7 @@ export const apiRequest = async (method, path, data) => {
       data: method !== "GET" ? data : undefined,
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     return response;

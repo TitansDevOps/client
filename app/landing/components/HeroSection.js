@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
@@ -12,7 +12,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section 
+    <section
       id="hero" // ID esencial para el funcionamiento
       className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-blue-100 relative overflow-hidden"
     >
@@ -31,10 +31,12 @@ export default function HeroSection() {
               className="space-y-6"
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                Haz la diferencia, <span className="text-blue-600">adopta un amigo</span>.
+                Haz la diferencia,{" "}
+                <span className="text-blue-600">adopta un amigo</span>.
               </h1>
               <p className="text-lg md:text-xl text-gray-700 max-w-lg">
-                Conectamos animales rescatados con hogares amorosos. Más de 1,000 mascotas esperan por una segunda oportunidad.
+                Conectamos animales rescatados con hogares amorosos. Más de
+                1,000 mascotas esperan por una segunda oportunidad.
               </p>
               <button className="bg-gradient-to-r from-orange-500 to-orange-400 text-white px-8 py-4 rounded-lg font-medium flex items-center space-x-2 shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
                 <span>Conoce nuestras mascotas</span>

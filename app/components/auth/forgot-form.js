@@ -3,12 +3,8 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
-import styles from "../styles/globals.css";
-import { EmailForm } from "./emailForm";
-import { useRouter } from "next/navigation";
+import styles from "../../../styles/globals.css";
+import { EmailForm } from "@/app/components/auth/emailForm";
 import { apiPost } from "@/utils/api";
 import { ToastMessage } from "@/components/ui/toast";
 

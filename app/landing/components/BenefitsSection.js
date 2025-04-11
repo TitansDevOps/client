@@ -1,43 +1,47 @@
-'use client';
-import { motion } from 'framer-motion';
-import { PawPrint, Heart, ShieldCheck, Users } from 'lucide-react'; // o usa tus propios íconos SVG
+"use client";
+import { motion } from "framer-motion";
+import { PawPrint, Heart, ShieldCheck, Users } from "lucide-react"; // o usa tus propios íconos SVG
 
 export default function EnhancedBenefitsSection() {
   const benefits = [
     {
       title: "Salvavidas Peludos",
-      description: "Cada adopción libera espacio en refugios para ayudar a otro animal necesitado.",
+      description:
+        "Cada adopción libera espacio en refugios para ayudar a otro animal necesitado.",
       icon: <PawPrint className="text-purple-600" size={24} />,
       bgClass: "bg-purple-50",
-      delay: 0.1
+      delay: 0.1,
     },
     {
       title: "Amor Garantizado",
-      description: "Los animales adoptados muestran un agradecimiento y lealtad incomparables.",
+      description:
+        "Los animales adoptados muestran un agradecimiento y lealtad incomparables.",
       icon: <Heart className="text-red-500" size={24} />,
       bgClass: "bg-red-50",
-      delay: 0.3
+      delay: 0.3,
     },
     {
       title: "Adopción Segura",
-      description: "Todos nuestros animales tienen chequeo veterinario completo y esterilización.",
+      description:
+        "Todos nuestros animales tienen chequeo veterinario completo y esterilización.",
       icon: <ShieldCheck className="text-blue-600" size={24} />,
       bgClass: "bg-blue-50",
-      delay: 0.5
+      delay: 0.5,
     },
     {
       title: "Comunidad",
-      description: "Acceso a nuestro grupo exclusivo de dueños con consejos y eventos especiales.",
+      description:
+        "Acceso a nuestro grupo exclusivo de dueños con consejos y eventos especiales.",
       icon: <Users className="text-green-600" size={24} />, // Asegúrate de importar el ícono
       bgClass: "bg-green-50",
-      delay: 0.7
-    }
+      delay: 0.7,
+    },
   ];
 
   return (
     <section className="py-16 bg-gradient-to-br from-white to-blue-50">
       <div className="container mx-auto px-4">
-        <motion.h2 
+        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -45,7 +49,7 @@ export default function EnhancedBenefitsSection() {
         >
           Beneficios de Adoptar
         </motion.h2>
-        
+
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -68,7 +72,9 @@ export default function EnhancedBenefitsSection() {
               <div className="flex items-center justify-center w-14 h-14 bg-white rounded-full mb-4 mx-auto shadow-md">
                 {benefit.icon}
               </div>
-              <h3 className="text-xl font-semibold text-center mb-3 text-gray-800">{benefit.title}</h3>
+              <h3 className="text-xl font-semibold text-center mb-3 text-gray-800">
+                {benefit.title}
+              </h3>
               <p className="text-gray-600 text-center">{benefit.description}</p>
             </motion.div>
           ))}

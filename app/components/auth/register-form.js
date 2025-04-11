@@ -3,9 +3,9 @@ import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 
-import styles from "../styles/globals.css";
+import styles from "../../../styles/globals.css";
 import { PasswordForm } from "./passwordForm";
-import { EmailForm } from "./emailForm";
+import { EmailForm } from "@/app/components/auth/emailForm";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { apiPost } from "@/utils/api";
@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 import { ToastMessage } from "@/components/ui/toast";
+import { useAuth } from "@/app/context/AuthContext";
 
 export function RegisterForm({ className, ...props }) {
   const [registerForm, setRegisterForm] = useState({
@@ -26,6 +27,7 @@ export function RegisterForm({ className, ...props }) {
   const [isFormValid, setIsFormValid] = useState(false);
 
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleSubmitFullName = (e) => {
     const fullName = e.target.value;
@@ -53,6 +55,7 @@ export function RegisterForm({ className, ...props }) {
   const isEmailValid = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
     registerForm.email,
   );
+
   useEffect(() => {
     const allFieldsFilled =
       registerForm.fullName &&
@@ -77,11 +80,13 @@ export function RegisterForm({ className, ...props }) {
       const response = await apiPost("/auth/register", registerForm);
 
       if (response.status === 201) {
+        login(response.data.body.token);
         setToastData({
           message: response.data.message,
           type: "success",
-          onClose: () => router.push("/login"),
+          onClose: () => router.push("/dashboard"),
         });
+        setIsFormValid(true);
       } else {
         setIsFormValid(true);
         setToastData({
