@@ -2,17 +2,15 @@
 
 ## [1.3.0](https://github.com/TitansDevOps/client/compare/v1.2.0...v1.3.0) (2025-04-11)
 
-
 ### Features
 
-* adoption centers module ([fd3bd11](https://github.com/TitansDevOps/client/commit/fd3bd1113b38452cf89c504c35d36e0960e40220))
-
+- adoption centers module ([fd3bd11](https://github.com/TitansDevOps/client/commit/fd3bd1113b38452cf89c504c35d36e0960e40220))
 
 ### Bug Fixes
 
-* delete package.lock ([1330c4c](https://github.com/TitansDevOps/client/commit/1330c4ce2bee437e605300c5ac0d3e5c2229ae21))
-* delete package.lock ([1330c4c](https://github.com/TitansDevOps/client/commit/1330c4ce2bee437e605300c5ac0d3e5c2229ae21))
-* delete package.lock ([b0d8cb9](https://github.com/TitansDevOps/client/commit/b0d8cb955760cde7906d232711ae9f7e0530ba3e))
+- delete package.lock ([1330c4c](https://github.com/TitansDevOps/client/commit/1330c4ce2bee437e605300c5ac0d3e5c2229ae21))
+- delete package.lock ([1330c4c](https://github.com/TitansDevOps/client/commit/1330c4ce2bee437e605300c5ac0d3e5c2229ae21))
+- delete package.lock ([b0d8cb9](https://github.com/TitansDevOps/client/commit/b0d8cb955760cde7906d232711ae9f7e0530ba3e))
 
 ## [1.2.0](https://github.com/TitansDevOps/client/compare/v1.1.1...v1.2.0) (2025-04-01)
 
