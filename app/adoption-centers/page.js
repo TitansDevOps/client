@@ -8,6 +8,8 @@ import { InputText } from "primereact/inputtext";
 import { Tag } from "primereact/tag";
 import { apiDelete, apiGet, apiPost } from "@/utils/api";
 import { ToastMessage } from "@/components/ui/toast";
+import SidebarDashboard from "@/app/components/Sidebar";
+import ProtectedRoute from "@/app/context/ProtectedRoute";
 
 export default function CentersPage() {
   const [centers, setCenters] = useState([]);
@@ -145,119 +147,131 @@ export default function CentersPage() {
   );
 
   return (
-    <div className="card p-4 shadow-2 border-round-lg">
-      {header}
+    <div className="flex">
+      <ProtectedRoute>
+        <SidebarDashboard />
+        <main className="flex-1 ml-16 overflow-auto">
+          <div className="card p-4 shadow-2 border-round-lg">
+            {header}
 
-      <DataTable
-        value={centers}
-        paginator
-        rows={limit}
-        first={(page - 1) * limit}
-        totalRecords={totalRecords}
-        rowsPerPageOptions={[5, 10, 25]}
-        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} centros"
-        globalFilter={globalFilter}
-        stripedRows
-        removableSort
-        className="p-datatable-sm"
-        emptyMessage="No se encontraron centros de adopción"
-        style={{ width: "100%" }}
-        loading={loading}
-        lazy
-        onPage={onPageChange}
-      >
-        <Column field="id" header="ID" sortable style={{ width: "80px" }} />
-        <Column
-          field="name"
-          header="Nombre"
-          sortable
-          style={{ minWidth: "150px" }}
-        />
-        <Column
-          field="description"
-          header="Descripción"
-          sortable
-          style={{ minWidth: "200px" }}
-        />
-        <Column
-          field="address"
-          header="Dirección"
-          sortable
-          style={{ minWidth: "200px" }}
-        />
-        <Column
-          field="phone"
-          header="Teléfono"
-          sortable
-          style={{ width: "150px" }}
-        />
-        <Column
-          field="email"
-          header="Email"
-          sortable
-          style={{ minWidth: "200px" }}
-        />
-        <Column
-          field="active"
-          header="Estado"
-          body={statusBodyTemplate}
-          sortable
-          style={{ width: "120px" }}
-        />
-        <Column
-          body={actionBodyTemplate}
-          header="Acciones"
-          style={{ width: "150px" }}
-          exportable={false}
-        />
-      </DataTable>
+            <DataTable
+              value={centers}
+              paginator
+              rows={limit}
+              first={(page - 1) * limit}
+              totalRecords={totalRecords}
+              rowsPerPageOptions={[5, 10, 25]}
+              paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+              currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} centros"
+              globalFilter={globalFilter}
+              stripedRows
+              removableSort
+              className="p-datatable-sm"
+              emptyMessage="No se encontraron centros de adopción"
+              style={{ width: "100%" }}
+              loading={loading}
+              lazy
+              onPage={onPageChange}
+            >
+              <Column
+                field="id"
+                header="ID"
+                sortable
+                style={{ width: "80px" }}
+              />
+              <Column
+                field="name"
+                header="Nombre"
+                sortable
+                style={{ minWidth: "150px" }}
+              />
+              <Column
+                field="description"
+                header="Descripción"
+                sortable
+                style={{ minWidth: "200px" }}
+              />
+              <Column
+                field="address"
+                header="Dirección"
+                sortable
+                style={{ minWidth: "200px" }}
+              />
+              <Column
+                field="phone"
+                header="Teléfono"
+                sortable
+                style={{ width: "150px" }}
+              />
+              <Column
+                field="email"
+                header="Email"
+                sortable
+                style={{ minWidth: "200px" }}
+              />
+              <Column
+                field="active"
+                header="Estado"
+                body={statusBodyTemplate}
+                sortable
+                style={{ width: "120px" }}
+              />
+              <Column
+                body={actionBodyTemplate}
+                header="Acciones"
+                style={{ width: "150px" }}
+                exportable={false}
+              />
+            </DataTable>
 
-      <Dialog
-        header="Nuevo Centro de Adopción"
-        visible={visibleDialog}
-        style={{ width: "50vw" }}
-        onHide={() => setVisibleDialog(false)}
-        breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-      >
-        <div className="p-fluid grid">
-          <div className="field col-12">
-            <label htmlFor="name">Nombre</label>
-            <InputText id="name" />
+            <Dialog
+              header="Nuevo Centro de Adopción"
+              visible={visibleDialog}
+              style={{ width: "50vw" }}
+              onHide={() => setVisibleDialog(false)}
+              breakpoints={{ "960px": "75vw", "641px": "90vw" }}
+            >
+              <div className="p-fluid grid">
+                <div className="field col-12">
+                  <label htmlFor="name">Nombre</label>
+                  <InputText id="name" />
+                </div>
+                <div className="field col-12">
+                  <label htmlFor="description">Descripción</label>
+                  <InputText id="description" />
+                </div>
+                <div className="field col-12 md:col-6">
+                  <label htmlFor="address">Dirección</label>
+                  <InputText id="address" />
+                </div>
+                <div className="field col-12 md:col-6">
+                  <label htmlFor="phone">Teléfono</label>
+                  <InputText id="phone" />
+                </div>
+                <div className="field col-12">
+                  <label htmlFor="email">Email</label>
+                  <InputText id="email" />
+                </div>
+                <div className="field col-12 flex justify-content-end gap-3 mt-4">
+                  <Button
+                    label="Cancelar"
+                    icon="pi pi-times"
+                    className="p-button-text"
+                    onClick={() => setVisibleDialog(false)}
+                  />
+                  <Button
+                    label="Guardar"
+                    icon="pi pi-check"
+                    autoFocus
+                    className="p-button-raised"
+                    onClick={() => handleSave(formData)}
+                  />
+                </div>
+              </div>
+            </Dialog>
           </div>
-          <div className="field col-12">
-            <label htmlFor="description">Descripción</label>
-            <InputText id="description" />
-          </div>
-          <div className="field col-12 md:col-6">
-            <label htmlFor="address">Dirección</label>
-            <InputText id="address" />
-          </div>
-          <div className="field col-12 md:col-6">
-            <label htmlFor="phone">Teléfono</label>
-            <InputText id="phone" />
-          </div>
-          <div className="field col-12">
-            <label htmlFor="email">Email</label>
-            <InputText id="email" />
-          </div>
-          <div className="field col-12 flex justify-content-end gap-3 mt-4">
-            <Button
-              label="Cancelar"
-              icon="pi pi-times"
-              className="p-button-text"
-              onClick={() => setVisibleDialog(false)}
-            />
-            <Button
-              label="Guardar"
-              icon="pi pi-check"
-              autoFocus
-              className="p-button-raised"
-              onClick={() => handleSave(formData)}
-            />
-          </div>
-        </div>
-      </Dialog>
+        </main>
+      </ProtectedRoute>
     </div>
   );
 }
