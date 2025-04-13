@@ -5,9 +5,8 @@ import SidebarDashboard from "@/app/components/Sidebar";
 
 export default function App() {
   return (
-    // <ProtectedRoute>
-    <SidebarDashboard />
-
-    // </ProtectedRoute>
+    <ProtectedRoute>
+      <SidebarDashboard />
+    </ProtectedRoute>
   );
 }
