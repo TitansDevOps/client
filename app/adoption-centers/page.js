@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Tag } from "primereact/tag";
 import { apiDelete, apiGet, apiPost } from "@/utils/api";
@@ -18,8 +17,16 @@ export default function CentersPage() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [visibleDialog, setVisibleDialog] = useState(false);
-  const [globalFilter, setGlobalFilter] = useState("");
   const [toastData, setToastData] = useState(null);
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: "contains" },
+    name: { value: null, matchMode: "contains" },
+    description: { value: null, matchMode: "contains" },
+    address: { value: null, matchMode: "contains" },
+    phone: { value: null, matchMode: "contains" },
+    email: { value: null, matchMode: "contains" },
+    active: { value: null, matchMode: "equals" },
+  });
 
   const [formData, setFormData] = useState({
     name: "",
@@ -122,39 +129,38 @@ export default function CentersPage() {
           onClose={toastData.onClose}
         />
       )}
-      <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center gap-3 mb-4">
-        <h2 className="text-2xl font-bold m-0">Centros de Adopción</h2>
-        <div className="flex flex-column sm:flex-row gap-3">
-          <Button
-            label="Nuevo Centro"
-            icon="pi pi-plus"
-            className="p-button-sm p-button-raised"
-            onClick={() => setVisibleDialog(true)}
-          />
-          <span className="p-input-icon-left w-full">
-            <i className="pi pi-search" />
+      <div className="flex flex-col pb-4 space-y-4">
+        <h2 className="text-3xl font-bold m-0">Centros de Adopción</h2>
+
+        <div className="flex justify-end">
+          <div className="flex items-center">
+            <i className="pi pi-search mr-2 justify-end" />
             <InputText
               type="search"
               placeholder="Buscar centros..."
-              onInput={(e) => setGlobalFilter(e.target.value)}
-              className="p-inputtext-sm w-full"
+              onInput={(e) =>
+                setFilters({
+                  ...filters,
+                  global: { value: e.target.value, matchMode: "contains" },
+                })
+              }
+              className="p-inputtext-sm"
               style={{ minWidth: "250px" }}
             />
-          </span>
+          </div>
         </div>
       </div>
     </>
   );
 
   return (
-    <div className="flex">
+    <div className="flex bg-slate-100">
       <ProtectedRoute>
         <SidebarDashboard />
-        <main className="flex-1 ml-16 overflow-auto">
-          <div className="card p-4 shadow-2 border-round-lg">
-            {header}
-
+        <main className="flex-1 overflow-auto">
+          <div className="card p-2 shadow-2 border-round-lg">
             <DataTable
+              header={header}
               value={centers}
               paginator
               rows={limit}
@@ -163,7 +169,8 @@ export default function CentersPage() {
               rowsPerPageOptions={[5, 10, 25]}
               paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
               currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} centros"
-              globalFilter={globalFilter}
+              filters={filters}
+              filterDisplay="row"
               stripedRows
               removableSort
               className="p-datatable-sm"
@@ -173,6 +180,7 @@ export default function CentersPage() {
               lazy
               onPage={onPageChange}
             >
+              {/* FIXME: Remove this when we have a proper ID */}
               <Column
                 field="id"
                 header="ID"
@@ -223,52 +231,6 @@ export default function CentersPage() {
                 exportable={false}
               />
             </DataTable>
-
-            <Dialog
-              header="Nuevo Centro de Adopción"
-              visible={visibleDialog}
-              style={{ width: "50vw" }}
-              onHide={() => setVisibleDialog(false)}
-              breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-            >
-              <div className="p-fluid grid">
-                <div className="field col-12">
-                  <label htmlFor="name">Nombre</label>
-                  <InputText id="name" />
-                </div>
-                <div className="field col-12">
-                  <label htmlFor="description">Descripción</label>
-                  <InputText id="description" />
-                </div>
-                <div className="field col-12 md:col-6">
-                  <label htmlFor="address">Dirección</label>
-                  <InputText id="address" />
-                </div>
-                <div className="field col-12 md:col-6">
-                  <label htmlFor="phone">Teléfono</label>
-                  <InputText id="phone" />
-                </div>
-                <div className="field col-12">
-                  <label htmlFor="email">Email</label>
-                  <InputText id="email" />
-                </div>
-                <div className="field col-12 flex justify-content-end gap-3 mt-4">
-                  <Button
-                    label="Cancelar"
-                    icon="pi pi-times"
-                    className="p-button-text"
-                    onClick={() => setVisibleDialog(false)}
-                  />
-                  <Button
-                    label="Guardar"
-                    icon="pi pi-check"
-                    autoFocus
-                    className="p-button-raised"
-                    onClick={() => handleSave(formData)}
-                  />
-                </div>
-              </div>
-            </Dialog>
           </div>
         </main>
       </ProtectedRoute>
