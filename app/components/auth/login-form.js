@@ -60,7 +60,7 @@ export function LoginForm({ className, ...props }) {
       const response = await apiPost("/auth/login", { email, password });
 
       if (response.status === 200) {
-        login(response.data.body.token);
+        login(response.data.body.token, response.data.body.user);
         setToastData({
           message: response.data.message,
           type: "success",
