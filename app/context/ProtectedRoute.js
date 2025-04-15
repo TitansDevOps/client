@@ -7,14 +7,14 @@ export default function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push("/login");
-    }
-  }, [user, loading, router]);
+  // useEffect(() => {
+  //   if (!loading && !user) {
+  //     router.push("/login");
+  //   }
+  // }, [user, loading, router]);
 
-  if (loading) return <p>Cargando...</p>;
+  // if (loading) return <p>Cargando...</p>;
 
-  return user ? children : null;
+  // return user ? children : null;
   return children;
 }

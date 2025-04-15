@@ -80,7 +80,7 @@ export function RegisterForm({ className, ...props }) {
       const response = await apiPost("/auth/register", registerForm);
 
       if (response.status === 201) {
-        login(response.data.body.token);
+        login(response.data.body.token, response.data.body.user);
         setToastData({
           message: response.data.message,
           type: "success",

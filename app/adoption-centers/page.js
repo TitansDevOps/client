@@ -7,8 +7,7 @@ import { InputText } from "primereact/inputtext";
 import { Tag } from "primereact/tag";
 import { apiDelete, apiGet, apiPost } from "@/utils/api";
 import { ToastMessage } from "@/components/ui/toast";
-import SidebarDashboard from "@/app/components/Sidebar";
-import ProtectedRoute from "@/app/context/ProtectedRoute";
+import LayoutPage from "@/app/components/Layout";
 
 export default function CentersPage() {
   const [centers, setCenters] = useState([]);
@@ -154,86 +153,76 @@ export default function CentersPage() {
   );
 
   return (
-    <div className="flex bg-slate-100">
-      <ProtectedRoute>
-        <SidebarDashboard />
-        <main className="flex-1 overflow-auto">
-          <div className="card p-2 shadow-2 border-round-lg">
-            <DataTable
-              header={header}
-              value={centers}
-              paginator
-              rows={limit}
-              first={(page - 1) * limit}
-              totalRecords={totalRecords}
-              rowsPerPageOptions={[5, 10, 25]}
-              paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-              currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} centros"
-              filters={filters}
-              filterDisplay="row"
-              stripedRows
-              removableSort
-              className="p-datatable-sm"
-              emptyMessage="No se encontraron centros de adopción"
-              style={{ width: "100%" }}
-              loading={loading}
-              lazy
-              onPage={onPageChange}
-            >
-              {/* FIXME: Remove this when we have a proper ID */}
-              <Column
-                field="id"
-                header="ID"
-                sortable
-                style={{ width: "80px" }}
-              />
-              <Column
-                field="name"
-                header="Nombre"
-                sortable
-                style={{ minWidth: "150px" }}
-              />
-              <Column
-                field="description"
-                header="Descripción"
-                sortable
-                style={{ minWidth: "200px" }}
-              />
-              <Column
-                field="address"
-                header="Dirección"
-                sortable
-                style={{ minWidth: "200px" }}
-              />
-              <Column
-                field="phone"
-                header="Teléfono"
-                sortable
-                style={{ width: "150px" }}
-              />
-              <Column
-                field="email"
-                header="Email"
-                sortable
-                style={{ minWidth: "200px" }}
-              />
-              <Column
-                field="active"
-                header="Estado"
-                body={statusBodyTemplate}
-                sortable
-                style={{ width: "120px" }}
-              />
-              <Column
-                body={actionBodyTemplate}
-                header="Acciones"
-                style={{ width: "150px" }}
-                exportable={false}
-              />
-            </DataTable>
-          </div>
-        </main>
-      </ProtectedRoute>
-    </div>
+    <LayoutPage>
+      <div className="card p-2 shadow-2 border-round-lg">
+        <DataTable
+          header={header}
+          value={centers}
+          paginator
+          rows={limit}
+          first={(page - 1) * limit}
+          totalRecords={totalRecords}
+          rowsPerPageOptions={[5, 10, 25]}
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} centros"
+          filters={filters}
+          filterDisplay="row"
+          stripedRows
+          removableSort
+          className="p-datatable-sm"
+          emptyMessage="No se encontraron centros de adopción"
+          style={{ width: "100%" }}
+          loading={loading}
+          lazy
+          onPage={onPageChange}
+        >
+          {/* FIXME: Remove this when we have a proper ID */}
+          <Column field="id" header="ID" sortable style={{ width: "80px" }} />
+          <Column
+            field="name"
+            header="Nombre"
+            sortable
+            style={{ minWidth: "150px" }}
+          />
+          <Column
+            field="description"
+            header="Descripción"
+            sortable
+            style={{ minWidth: "200px" }}
+          />
+          <Column
+            field="address"
+            header="Dirección"
+            sortable
+            style={{ minWidth: "200px" }}
+          />
+          <Column
+            field="phone"
+            header="Teléfono"
+            sortable
+            style={{ width: "150px" }}
+          />
+          <Column
+            field="email"
+            header="Email"
+            sortable
+            style={{ minWidth: "200px" }}
+          />
+          <Column
+            field="active"
+            header="Estado"
+            body={statusBodyTemplate}
+            sortable
+            style={{ width: "120px" }}
+          />
+          <Column
+            body={actionBodyTemplate}
+            header="Acciones"
+            style={{ width: "150px" }}
+            exportable={false}
+          />
+        </DataTable>
+      </div>
+    </LayoutPage>
   );
 }

@@ -4,7 +4,7 @@ export const apiUrl = (path) => {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
   if (!BASE_URL) {
-    throw new Error("Falta la variable de entorno: NEXT_PUBLIC_API_URL");
+    alert("AMBIENTE MAL CONFIGURADO, CONTACTE A SOPORTE DE TI");
   }
 
   return `${BASE_URL}${path}`;
@@ -12,7 +12,6 @@ export const apiUrl = (path) => {
 
 export const apiRequest = async (method, path, data) => {
   const token = localStorage.getItem("token");
-  console.log(token);
   try {
     const response = await axios({
       method,

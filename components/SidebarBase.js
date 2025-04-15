@@ -1,14 +1,23 @@
 import { MoreVertical, ChevronLast, ChevronFirst } from "lucide-react";
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/context/AuthContext";
 
 const SidebarContext = createContext();
 
-export default function Sidebar({ children }) {
+export default function Sidebar({ children, isOpen }) {
   const [expanded, setExpanded] = useState(false);
+  const router = useRouter();
+
+  const { objectUser } = useAuth();
+
+  useEffect(() => {
+    isOpen(expanded);
+  }, [expanded]);
 
   return (
     <aside
-      className={`relative h-screen transition-all duration-300 ${expanded ? "w-64" : "w-16"} fixed left-0 top-0`}
+      className={`fixed h-screen transition-all duration-300 ${expanded ? "w-64" : "w-16"} left-0 top-0 z-50`}
     >
       <button
         onClick={() => setExpanded((curr) => !curr)}
@@ -37,7 +46,7 @@ export default function Sidebar({ children }) {
 
         <div className="border-t flex p-3">
           <img
-            src="https://ui-avatars.com/api/?name=Titans+DevOps&background=0D8ABC&color=fff"
+            src={`https://ui-avatars.com/api/?name=${objectUser?.user?.fullName}&background=0D8ABC&color=fff`}
             alt=""
             className="w-10 h-10 rounded-md"
           />
@@ -47,12 +56,12 @@ export default function Sidebar({ children }) {
               overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}
           `}
           >
-            <div className="leading-4">
+            <div className="leading-4" onClick={() => router.push("/profile")}>
               <h4 className="font-semibold" style={{ color: "black" }}>
-                TitansDevOps
+                {objectUser?.user?.fullName}
               </h4>
               <span className="text-xs text-gray-600">
-                TitansDevOps@gmail.com
+                {objectUser?.user?.email}
               </span>
             </div>
             <MoreVertical size={20} />
