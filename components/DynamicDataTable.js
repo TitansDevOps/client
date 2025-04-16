@@ -37,7 +37,7 @@ const DynamicDataTable = ({
   });
 
   const header = showHeader && (
-    <div className="flex flex-col pb-4 space-y-4">
+    <div className="flex flex-col pb-2 space-y-4">
       {title && <h2 className="text-3xl font-bold m-0">{title}</h2>}
 
       {showGlobalFilter && (
@@ -106,7 +106,7 @@ const DynamicDataTable = ({
 
   return (
     <div
-      className={`card p-2 shadow-2 border-round-lg ${className}`}
+      className={`card px-2 shadow-2 border-round-lg ${className}`}
       style={style}
     >
       <Toast ref={toastRef} />
