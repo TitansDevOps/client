@@ -3,6 +3,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
+import { Tooltip } from "primereact/tooltip";
 
 const DynamicDataTable = ({
   title = "",
@@ -21,7 +22,6 @@ const DynamicDataTable = ({
   onPageChange = () => {},
   onSort = () => {},
   rowActions = null,
-  exportable = false,
   selectionMode = null,
   onSelectionChange = null,
   selectedItems = null,
@@ -31,6 +31,7 @@ const DynamicDataTable = ({
   style = {},
   emptyMessage = "No se encontraron registros",
   toastRef = null,
+  onReload = () => {},
 }) => {
   const [filters, setFilters] = useState({
     global: { value: "", matchMode: "contains" },
@@ -42,8 +43,21 @@ const DynamicDataTable = ({
 
       {showGlobalFilter && (
         <div className="flex justify-end">
+          <div className="hover-text-blue-500">
+            <Tooltip
+              target=".reload-icon"
+              content="Reload"
+              position="top"
+              className=""
+            />
+            <i
+              className="reload-icon pr-5 pi pi-sync hover:cursor-pointer not-sr-only"
+              onClick={() => onReload()}
+              style={{ cursor: "pointer", userSelect: "none" }}
+            />
+          </div>
           <div className="flex items-center">
-            <i className="pi pi-search mr-2" />
+            <i className="pi pi-search mr-2" onClick={onReload} />
             <InputText
               type="search"
               placeholder={placeholder}
@@ -127,6 +141,7 @@ const DynamicDataTable = ({
         className="p-datatable-sm"
         emptyMessage={emptyMessage}
         loading={loading}
+        loadingIcon="pi pi-spinner"
         lazy={lazy}
         onPage={onPageChange}
         selectionMode={selectionMode}

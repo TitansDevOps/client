@@ -31,7 +31,9 @@ export default function SidebarDashboard({ isOpenSidebar }) {
   };
 
   return (
-    <>
+    <div
+      className={`h-full ${isOpenSidebar ? "w-64" : "w-16"} transition-all duration-300 fixed`}
+    >
       <Sidebar isOpen={isOpen}>
         <div className="mt-4">
           <motion.div
@@ -73,6 +75,6 @@ export default function SidebarDashboard({ isOpenSidebar }) {
           </motion.div>
         </div>
       </Sidebar>
-    </>
+    </div>
   );
 }
