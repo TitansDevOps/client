@@ -54,7 +54,7 @@ export default function CentersTable() {
         showToast("success", "Centro eliminado correctamente");
         onLoadPage();
       } else {
-        showToast("error", "Error al eliminar centro");
+        showToast("error", response.data.message);
       }
     } catch (error) {
       console.error("Error deleting center:", error);
@@ -89,15 +89,17 @@ export default function CentersTable() {
   );
 
   return (
-    <>
-      <div className="flex justify-between items-center mb-4 px-4">
-        <h1 className="text-2xl font-bold py-4">Centros de Adopción</h1>
-        <Button
-          icon="pi pi-plus"
-          label="Crear Centro"
-          onClick={handleCreateClick}
-          className="px-5 py-2 bg-blue-500 hover:bg-blue-600 active:bg-blue-400 text-white font-semibold rounded-md shadow-md transition-all duration-200"
-        />
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold py-4 px-4">Centros de Adopción</h1>
+        <div className="flex justify-end">
+          <Button
+            icon="pi pi-plus"
+            label="Crear Centro"
+            onClick={handleCreateClick}
+            className="px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md shadow-md"
+          />
+        </div>
       </div>
 
       <DynamicDataTable
@@ -111,6 +113,7 @@ export default function CentersTable() {
           setLimit(e.rows);
         }}
         ref={toastRef}
+        onReload={onLoadPage}
       />
 
       <Modal
@@ -125,6 +128,6 @@ export default function CentersTable() {
       >
         <p>¿Estás seguro de eliminar este centro?</p>
       </Modal>
-    </>
+    </div>
   );
 }
