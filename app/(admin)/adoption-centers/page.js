@@ -80,7 +80,7 @@ export default function CentersTable() {
   const actionBodyTemplate = (rowData) => (
     <div className="flex gap-2">
       <Button icon="pi pi-eye" onClick={() => handleShowClick(rowData.id)} />
-      <Button icon="pi pi-pencil" onClick={() => handleEditClick(rowData.id)} />
+      <Button icon="pi pi-pencil" onClick={() => handleEditClick(rowData.id)} /> 
       <Button
         icon="pi pi-trash"
         onClick={() => handleDeleteClick(rowData.id)}
