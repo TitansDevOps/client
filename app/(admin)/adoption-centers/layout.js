@@ -1,4 +1,3 @@
-// app/(admin)/adoption-centers/layout.js
 "use client";
 import { usePathname } from "next/navigation";
 import LayoutPage from "@/app/components/Layout";
@@ -12,7 +11,10 @@ export default function AdoptionCentersLayout({ children, table }) {
     <ToastProvider>
       <LayoutPage>
         {isBaseRoute ? (
-          children
+          <>
+            {table}
+            {children}
+          </>
         ) : (
           <>
             {table}

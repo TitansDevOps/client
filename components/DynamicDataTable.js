@@ -3,6 +3,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
+import { Tooltip } from "primereact/tooltip";
 
 const DynamicDataTable = ({
   title = "",
@@ -21,7 +22,6 @@ const DynamicDataTable = ({
   onPageChange = () => {},
   onSort = () => {},
   rowActions = null,
-  exportable = false,
   selectionMode = null,
   onSelectionChange = null,
   selectedItems = null,
@@ -31,19 +31,33 @@ const DynamicDataTable = ({
   style = {},
   emptyMessage = "No se encontraron registros",
   toastRef = null,
+  onReload = () => {},
 }) => {
   const [filters, setFilters] = useState({
     global: { value: "", matchMode: "contains" },
   });
 
   const header = showHeader && (
-    <div className="flex flex-col pb-4 space-y-4">
+    <div className="flex flex-col pb-2 space-y-4">
       {title && <h2 className="text-3xl font-bold m-0">{title}</h2>}
 
       {showGlobalFilter && (
         <div className="flex justify-end">
+          <div className="hover-text-blue-500">
+            <Tooltip
+              target=".reload-icon"
+              content="Reload"
+              position="top"
+              className=""
+            />
+            <i
+              className="reload-icon pr-5 pi pi-sync hover:cursor-pointer not-sr-only"
+              onClick={() => onReload()}
+              style={{ cursor: "pointer", userSelect: "none" }}
+            />
+          </div>
           <div className="flex items-center">
-            <i className="pi pi-search mr-2" />
+            <i className="pi pi-search mr-2" onClick={onReload} />
             <InputText
               type="search"
               placeholder={placeholder}
@@ -106,7 +120,7 @@ const DynamicDataTable = ({
 
   return (
     <div
-      className={`card p-2 shadow-2 border-round-lg ${className}`}
+      className={`card px-2 shadow-2 border-round-lg ${className}`}
       style={style}
     >
       <Toast ref={toastRef} />
@@ -127,6 +141,7 @@ const DynamicDataTable = ({
         className="p-datatable-sm"
         emptyMessage={emptyMessage}
         loading={loading}
+        loadingIcon="pi pi-spinner"
         lazy={lazy}
         onPage={onPageChange}
         selectionMode={selectionMode}

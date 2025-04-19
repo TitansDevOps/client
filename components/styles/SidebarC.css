@@ -30,7 +30,6 @@
 .sidebarContent {
   height: calc(100% - 3.5rem);
   overflow-y: auto;
-  padding: 1rem;
 }
 
 .sidebarHeader {

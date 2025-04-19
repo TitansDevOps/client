@@ -21,7 +21,7 @@ export default function LayoutPage({ children }) {
   }, [isMobile]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[auto,1fr] min-h-screen bg-slate-50">
+    <div className="relative min-h-screen bg-slate-50 w-full">
       <ProtectedRoute>
         <div className={`fixed md:static z-10`}>
           <SidebarDashboard isOpenSidebar={setIsOpen} />
@@ -35,11 +35,11 @@ export default function LayoutPage({ children }) {
         )}
 
         <main
-          className={`transition-all duration-300 bg-slate-50 min-h-screen ${
-            isOpen ? "ml-64" : "ml-16 md:ml-16"
-          }`}
+          className={`relative transition-all duration-300 bg-slate-50 min-h-screen ${
+            isOpen ? "md:ml-64" : "md:ml-16"
+          } overflow-x-hidden`}
         >
-          {children}
+          <div className="w-full max-w-[calc(100vw-64px)]">{children}</div>
         </main>
       </ProtectedRoute>
     </div>

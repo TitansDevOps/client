@@ -40,3 +40,11 @@ export const apiGet = async (path) => apiRequest("GET", path);
 export const apiPost = async (path, data) => apiRequest("POST", path, data);
 export const apiPut = async (path, data) => apiRequest("PUT", path, data);
 export const apiDelete = async (path) => apiRequest("DELETE", path);
+
+export const getEnv = () => {
+  const env = process.env.NEXT_PUBLIC_API_URL;
+  if (env) {
+    return env;
+  }
+  alert("AMBIENTE MAL CONFIGURADO, CONTACTE A SOPORTE DE TI");
+};
