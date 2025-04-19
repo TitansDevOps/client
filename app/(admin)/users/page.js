@@ -30,6 +30,14 @@ export default function UsersPage() {
     }
   };
 
+  const handleShowClick = (userId) => {
+    router.push(`/users/${userId}?action=show`);
+  };
+
+  const handleEditClick = (userId) => {
+    router.push(`/users/${userId}?action=edit`);
+  };
+
   const actionBodyTemplate = (rowData) => (
     <div className="flex gap-2">
       <Button icon="pi pi-eye" onClick={() => handleShowClick(rowData.id)} />
