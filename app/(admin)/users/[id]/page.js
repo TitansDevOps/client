@@ -120,7 +120,6 @@ function DetailView({ users }) {
             <p className="flex items-center gap-2">
               <User size={20} /> {users.role}
             </p>
-        
           </div>
         </div>
       ),

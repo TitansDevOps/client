@@ -22,25 +22,31 @@ export default function UsersPage() {
 
 
   useEffect(() => {
-    fetchUsers();
+    onLoadPage();
   }, [page, limit]);
 
   const onLoadPage = async () => {
-      setLoading(true);
-      const users = await fetchUsers(page, limit);
+    console.log("onLoadPage ejecutado");
+    setLoading(true);
+    const users = await fetchUsers(page, limit);
+    if (users && users.data) {
+      console.log("Usuarios obtenidos:", users.data);
       setUsers(users.data);
       setTotalRecords(users.total);
-      setLoading(false);
-    };
-
+    } else {
+      console.error("La respuesta no tiene la estructura esperada.");
+    }
+    setLoading(false);
+  };
+  
   const fetchUsers = async () => {
     try {
       const res = await apiGet("/users?page=" + page + "&limit=" + limit);
-      console.log("Respuesta del backend:", res.data);
-      setUsers(res.data.body.data);
-      setTotalRecords(res.data.body.total);
+      console.log("Datos obtenidos:", res.data);
+      return res.data.body;
     } catch (error) {
       console.error("Error al obtener los usuarios:", error);
+      return { data: [], total: 0 };
     }
   };
 
@@ -66,6 +72,7 @@ export default function UsersPage() {
         data={users}
         columns={columns}
         totalRecords={totalRecords}
+        loading={loading}
         rowActions={actionBodyTemplate}
         onPageChange={(e) => {
           setPage(e.page + 1);
