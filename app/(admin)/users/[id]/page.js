@@ -10,7 +10,6 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Button } from "primereact/button";
 import CustomTabView from "@/components/CustomTabView";
-import { Galleria } from "primereact/galleria";
 import {
   Envelope,
   MapPin,
@@ -29,7 +28,7 @@ export default function UserDetail() {
   const toastRef = useContext(ToastContext);
 
   useEffect(() => {
-    const fetchCenter = async () => {
+    const fetchUsers = async () => {
       try {
         setLoading(true);
         const response = await apiGet(`/users/${id}`); 
@@ -41,20 +40,21 @@ export default function UserDetail() {
       }
     };
 
-    fetchCenter();
+    fetchUsers();
   }, [id]);
 
   const handleSave = async (formData) => {
     try {
-      await apiPut(`/users/${id}`, formData);
+      await apiPut(`/users/${id}`, formData);  
       router.push("/users");
       showToast("success", "Usuario actualizado correctamente");
     } catch (error) {
-      console.error("Error updating center:", error);
+      console.error("Error updating users:", error);
     }
   };
 
   const showToast = (severity, message) => {
+    console.log("Toast called with:", severity, message);
     toastRef.current?.show({
       severity,
       summary: severity === "success" ? "Éxito" : "Error",
@@ -124,35 +124,6 @@ function DetailView({ users }) {
           </div>
         </div>
       ),
-    },
-    {
-      label: "Archivos",
-      content:
-        images.length > 0 ? (
-          <Galleria
-            value={images}
-            numVisible={3}
-            style={{ maxWidth: "100%" }}
-            showThumbnails={true}
-            showItemNavigators
-            showItemNavigatorsOnHover
-            circular
-            autoPlay
-            transitionInterval={4000}
-            item={(item) => (
-              <img src={item.itemImageSrc} alt={item.alt} className="w-full" />
-            )}
-            thumbnail={(item) => (
-              <img
-                src={item.thumbnailImageSrc}
-                alt={item.alt}
-                className="max-h-8 object-cover rounded-md"
-              />
-            )}
-          />
-        ) : (
-          <p className="text-gray-500">No hay archivos disponibles.</p>
-        ),
     },
   ];
 
@@ -282,66 +253,6 @@ function EditForm({ users, onSave }) {
                 onChange={(e) => handleChange("email", e.target.value)}
               />
             </div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      label: "Archivos",
-      content: (
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <label className="p-button p-component cursor-pointer">
-              <i className="pi pi-plus mr-2"></i>
-              Agregar archivos
-              <input
-                type="file"
-                multiple
-                onChange={handleFileUpload}
-                className="hidden"
-              />
-            </label>
-            <span className="text-sm text-gray-500">
-              {files.length} archivo(s) adjunto(s)
-            </span>
-          </div>
-
-          <div className="border rounded">
-            {files.length > 0 ? (
-              <ul className="divide-y">
-                {files.map((file) => (
-                  <li
-                    key={file.id}
-                    className="p-3 flex justify-between items-center"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span>{file.name || file.filename}</span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setFileToPreview(file);
-                          setIsPreviewOpen(true);
-                        }}
-                        className="text-blue-500 hover:text-blue-700"
-                      >
-                        <i className="pi pi-eye"></i>
-                      </button>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleFileDelete(file.id)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      <i className="pi pi-times"></i>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="p-4 text-center text-gray-500">
-                No hay archivos adjuntos
-              </div>
-            )}
           </div>
         </div>
       ),
