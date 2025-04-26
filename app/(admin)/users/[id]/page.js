@@ -10,8 +10,8 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Button } from "primereact/button";
 import CustomTabView from "@/components/CustomTabView";
-import { Galleria } from "primereact/galleria";
 import { Envelope, MapPin, Phone, User } from "phosphor-react";
+import { Pencil } from "lucide-react";
 
 export default function UserDetail() {
   const { id } = useParams();
@@ -24,19 +24,19 @@ export default function UserDetail() {
   const toastRef = useContext(ToastContext);
 
   useEffect(() => {
-    const fetchCenter = async () => {
+    const fetchUsers = async () => {
       try {
         setLoading(true);
         const response = await apiGet(`/users/${id}`);
         setUsers(response.data.body);
       } catch (error) {
-        showToast("error", "Error al obtener el usuario");
+        showToast("error", "Error al obtener los usuarios");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCenter();
+    fetchUsers();
   }, [id]);
 
   const handleSave = async (formData) => {
@@ -81,15 +81,6 @@ export default function UserDetail() {
 }
 
 function DetailView({ users }) {
-  const backendUrl = getEnv();
-
-  const images = (users?.files || []).map((file) => ({
-    itemImageSrc: `${backendUrl}/${file.webPath}`,
-    thumbnailImageSrc: `${backendUrl}/${file.webPath}`,
-    alt: `Imagen ${file.id}`,
-    title: file.filePath,
-  }));
-
   const tabs = [
     {
       label: "Información General",
@@ -120,33 +111,13 @@ function DetailView({ users }) {
       ),
     },
     {
-      label: "Archivos",
-      content:
-        images.length > 0 ? (
-          <Galleria
-            value={images}
-            numVisible={3}
-            style={{ maxWidth: "100%" }}
-            showThumbnails={true}
-            showItemNavigators
-            showItemNavigatorsOnHover
-            circular
-            autoPlay
-            transitionInterval={4000}
-            item={(item) => (
-              <img src={item.itemImageSrc} alt={item.alt} className="w-full" />
-            )}
-            thumbnail={(item) => (
-              <img
-                src={item.thumbnailImageSrc}
-                alt={item.alt}
-                className="max-h-8 object-cover rounded-md"
-              />
-            )}
-          />
-        ) : (
-          <p className="text-gray-500">No hay archivos disponibles.</p>
-        ),
+      label: (
+        <>
+          <Pencil size={20} />
+        </>
+      ),
+      content: <></>,
+      route: "/users/" + users.id + "?action=edit",
     },
   ];
 
@@ -155,72 +126,14 @@ function DetailView({ users }) {
 
 function EditForm({ users, onSave }) {
   const [formData, setFormData] = useState(users);
-  const [files, setFiles] = useState(users.files || []);
-  const [fileToPreview, setFileToPreview] = useState(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [filesToDelete, setFilesToDelete] = useState([]);
   const backendUrl = getEnv();
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleFileUpload = async (e) => {
-    const newFiles = Array.from(e.target.files);
-    if (newFiles.length === 0) return;
-
-    try {
-      const filesToUpload = await Promise.all(
-        newFiles.map(async (file) => {
-          const base64 = await convertToBase64(file);
-          return {
-            name: file.name,
-            base64: base64.split(",")[1],
-          };
-        }),
-      );
-
-      const response = await apiPost("/file/upload-base64", {
-        typeEntity: "USERS",
-        entityOwnerId: users.id,
-        files: filesToUpload,
-      });
-
-      if (response.status !== 201) {
-        showToast("error", "Error al subir archivos");
-        return;
-      }
-
-      setFiles(response.data.body);
-    } catch (error) {
-      showToast("error", "Error al subir archivos");
-    }
-  };
-
-  const handleFileDelete = async (fileId) => {
-    setFilesToDelete([...filesToDelete, fileId]);
-    setFiles(files.filter((file) => file.id !== fileId));
-  };
-
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
   const handleEdit = async (formData) => {
-    const responseDelete = await apiPost("/file/delete", {
-      file: filesToDelete.map((file) => ({ id: file })),
-    });
-
-    if (responseDelete.status !== 200) {
-      showToast("error", "Error al eliminar archivos");
-      return;
-    }
-
     onSave(formData);
   };
 
@@ -276,66 +189,6 @@ function EditForm({ users, onSave }) {
                 onChange={(e) => handleChange("email", e.target.value)}
               />
             </div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      label: "Archivos",
-      content: (
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <label className="p-button p-component cursor-pointer">
-              <i className="pi pi-plus mr-2"></i>
-              Agregar archivos
-              <input
-                type="file"
-                multiple
-                onChange={handleFileUpload}
-                className="hidden"
-              />
-            </label>
-            <span className="text-sm text-gray-500">
-              {files.length} archivo(s) adjunto(s)
-            </span>
-          </div>
-
-          <div className="border rounded">
-            {files.length > 0 ? (
-              <ul className="divide-y">
-                {files.map((file) => (
-                  <li
-                    key={file.id}
-                    className="p-3 flex justify-between items-center"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span>{file.name || file.filename}</span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setFileToPreview(file);
-                          setIsPreviewOpen(true);
-                        }}
-                        className="text-blue-500 hover:text-blue-700"
-                      >
-                        <i className="pi pi-eye"></i>
-                      </button>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleFileDelete(file.id)}
-                      className="text-red-500 hover:text-red-700"
-                    >
-                      <i className="pi pi-times"></i>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="p-4 text-center text-gray-500">
-                No hay archivos adjuntos
-              </div>
-            )}
           </div>
         </div>
       ),
