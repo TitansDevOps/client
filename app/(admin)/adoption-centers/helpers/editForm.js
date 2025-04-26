@@ -69,6 +69,14 @@ export default function EditForm({
         return;
       }
 
+      if (filesToDelete.length > 0) {
+        const responseDelete = await deleteFiles();
+        if (responseDelete.status !== 200) {
+          showToast("error", "Error al actualizar los archivos");
+          return;
+        }
+      }
+
       const response = await apiPost("/file/upload-base64", {
         typeEntity: "ADOPTION_CENTER",
         entityOwnerId: center.id,
@@ -100,11 +108,18 @@ export default function EditForm({
     });
   };
 
-  const handleEdit = async (formData) => {
+  const deleteFiles = async () => {
     const responseDelete = await apiPost("/file/delete", {
       file: filesToDelete.map((file) => ({ id: file })),
     });
 
+    if (responseDelete.status !== 200) return;
+    setFilesToDelete([]);
+    return responseDelete;
+  };
+
+  const handleEdit = async (formData) => {
+    const responseDelete = await deleteFiles();
     if (responseDelete.status !== 200) {
       showToast("error", "Error al eliminar archivos");
       return;

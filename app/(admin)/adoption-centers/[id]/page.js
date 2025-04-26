@@ -33,25 +33,26 @@ export default function CenterDetail() {
   const toastRef = useContext(ToastContext);
 
   useEffect(() => {
-    const fetchCenter = async () => {
-      try {
-        setLoading(true);
-        const response = await apiGet(`/adoption-centers/${id}`);
-        setCenter(response.data.body);
-      } catch (error) {
-        showToast("error", "Error al obtener el centro");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCenter();
   }, [id]);
+
+  const fetchCenter = async () => {
+    try {
+      setLoading(true);
+      const response = await apiGet(`/adoption-centers/${id}`);
+      setCenter(response.data.body);
+    } catch (error) {
+      showToast("error", "Error al obtener el centro");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSave = async (formData) => {
     try {
       await apiPut(`/adoption-centers/${id}`, formData);
-      router.push("/adoption-centers");
+      router.push("/adoption-centers/" + id);
+      await fetchCenter();
       showToast("success", "Centro actualizado correctamente");
     } catch (error) {
       showToast("error", "Error al actualizar el centro");
