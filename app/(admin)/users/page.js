@@ -22,12 +22,9 @@ export default function UsersPage() {
   const fetchUsers = async () => {
     try {
       const res = await apiGet("/users?page=" + page + "&limit=" + limit);
-      console.log("Respuesta del backend:", res.data);
       setUsers(res.data.body.data);
       setTotalRecords(res.data.body.total);
-    } catch (error) {
-      console.error("Error al obtener los usuarios:", error);
-    }
+    } catch (error) {}
   };
 
   const handleShowClick = (userId) => {

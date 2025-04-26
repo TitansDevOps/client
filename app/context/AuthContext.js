@@ -11,9 +11,10 @@ export function AuthProvider({ children }) {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setUser({ token });
+    const user = localStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setUser({ user: parsedUser });
     }
     setLoading(false);
   }, []);
@@ -22,7 +23,7 @@ export function AuthProvider({ children }) {
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
     setObjectUser({ user });
-    setUser({ token });
+    setUser({ user });
   };
 
   const logout = () => {
@@ -46,4 +47,9 @@ export function useAuth() {
     throw new Error("useAuth debe estar dentro de un AuthProvider");
   }
   return context;
+}
+
+export function useAuthUser() {
+  const { user } = useAuth();
+  return user;
 }
