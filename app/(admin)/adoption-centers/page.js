@@ -57,7 +57,6 @@ export default function CentersTable() {
         showToast("error", response.data.message);
       }
     } catch (error) {
-      console.error("Error deleting center:", error);
       showToast("error", "Error al eliminar centro");
     } finally {
       setDeleteModalOpen(false);
@@ -80,7 +79,7 @@ export default function CentersTable() {
   const actionBodyTemplate = (rowData) => (
     <div className="flex gap-2">
       <Button icon="pi pi-eye" onClick={() => handleShowClick(rowData.id)} />
-      <Button icon="pi pi-pencil" onClick={() => handleEditClick(rowData.id)} /> 
+      <Button icon="pi pi-pencil" onClick={() => handleEditClick(rowData.id)} />
       <Button
         icon="pi pi-trash"
         onClick={() => handleDeleteClick(rowData.id)}

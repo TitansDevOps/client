@@ -10,12 +10,8 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Button } from "primereact/button";
 import CustomTabView from "@/components/CustomTabView";
-import {
-  Envelope,
-  MapPin,
-  Phone,
-  User
-} from "phosphor-react";
+import { Envelope, MapPin, Phone, User } from "phosphor-react";
+import { Pencil } from "lucide-react";
 
 export default function UserDetail() {
   const { id } = useParams();
@@ -31,10 +27,10 @@ export default function UserDetail() {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await apiGet(`/users/${id}`); 
+        const response = await apiGet(`/users/${id}`);
         setUsers(response.data.body);
       } catch (error) {
-        console.error("Error fetching user:", error);
+        showToast("error", "Error al obtener los usuarios");
       } finally {
         setLoading(false);
       }
@@ -45,16 +41,15 @@ export default function UserDetail() {
 
   const handleSave = async (formData) => {
     try {
-      await apiPut(`/users/${id}`, formData);  
+      await apiPut(`/users/${id}`, formData);
       router.push("/users");
       showToast("success", "Usuario actualizado correctamente");
     } catch (error) {
-      console.error("Error updating users:", error);
+      showToast("error", "Error al actualizar el usuario");
     }
   };
 
   const showToast = (severity, message) => {
-    console.log("Toast called with:", severity, message);
     toastRef.current?.show({
       severity,
       summary: severity === "success" ? "Éxito" : "Error",
@@ -86,15 +81,6 @@ export default function UserDetail() {
 }
 
 function DetailView({ users }) {
-  const backendUrl = getEnv();
-
-  const images = (users?.files || []).map((file) => ({
-    itemImageSrc: `${backendUrl}/${file.webPath}`,
-    thumbnailImageSrc: `${backendUrl}/${file.webPath}`,
-    alt: `Imagen ${file.id}`,
-    title: file.filePath,
-  }));
-
   const tabs = [
     {
       label: "Información General",
@@ -124,6 +110,15 @@ function DetailView({ users }) {
         </div>
       ),
     },
+    {
+      label: (
+        <>
+          <Pencil size={20} />
+        </>
+      ),
+      content: <></>,
+      route: "/users/" + users.id + "?action=edit",
+    },
   ];
 
   return <CustomTabView tabs={tabs} />;
@@ -131,72 +126,14 @@ function DetailView({ users }) {
 
 function EditForm({ users, onSave }) {
   const [formData, setFormData] = useState(users);
-  const [files, setFiles] = useState(users.files || []);
-  const [fileToPreview, setFileToPreview] = useState(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [filesToDelete, setFilesToDelete] = useState([]);
   const backendUrl = getEnv();
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleFileUpload = async (e) => {
-    const newFiles = Array.from(e.target.files);
-    if (newFiles.length === 0) return;
-
-    try {
-      const filesToUpload = await Promise.all(
-        newFiles.map(async (file) => {
-          const base64 = await convertToBase64(file);
-          return {
-            name: file.name,
-            base64: base64.split(",")[1],
-          };
-        }),
-      );
-
-      const response = await apiPost("/file/upload-base64", {
-        typeEntity: "USERS",
-        entityOwnerId: users.id,
-        files: filesToUpload,
-      });
-
-      if (response.status !== 201) {
-        console.error("Error uploading files:", response.data.message);
-        return;
-      }
-
-      setFiles(response.data.body);
-    } catch (error) {
-      console.error("Error uploading files:", error);
-    }
-  };
-
-  const handleFileDelete = async (fileId) => {
-    setFilesToDelete([...filesToDelete, fileId]);
-    setFiles(files.filter((file) => file.id !== fileId));
-  };
-
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
   const handleEdit = async (formData) => {
-    const responseDelete = await apiPost("/file/delete", {
-      file: filesToDelete.map((file) => ({ id: file })),
-    });
-
-    if (responseDelete.status !== 200) {
-      console.error("Error deleting files:", responseDelete.data.message);
-      return;
-    }
-
     onSave(formData);
   };
 
