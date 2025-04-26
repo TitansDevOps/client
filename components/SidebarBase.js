@@ -1,7 +1,7 @@
 import { MoreVertical, ChevronLast, ChevronFirst } from "lucide-react";
 import { useContext, createContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuthUser } from "@/app/context/AuthContext";
 
 const SidebarContext = createContext();
 
@@ -9,7 +9,7 @@ export default function Sidebar({ children, isOpen }) {
   const [expanded, setExpanded] = useState(false);
   const router = useRouter();
 
-  const { objectUser } = useAuth();
+  const { user } = useAuthUser();
 
   useEffect(() => {
     isOpen(expanded);
@@ -46,7 +46,7 @@ export default function Sidebar({ children, isOpen }) {
 
         <div className="border-t flex p-3">
           <img
-            src={`https://ui-avatars.com/api/?name=${objectUser?.user?.fullName}&background=0D8ABC&color=fff`}
+            src={`https://ui-avatars.com/api/?name=${user?.fullName}&background=0D8ABC&color=fff`}
             alt=""
             className="w-10 h-10 rounded-md"
           />
@@ -58,11 +58,9 @@ export default function Sidebar({ children, isOpen }) {
           >
             <div className="leading-4" onClick={() => router.push("/profile")}>
               <h4 className="font-semibold" style={{ color: "black" }}>
-                {objectUser?.user?.fullName}
+                {user?.fullName}
               </h4>
-              <span className="text-xs text-gray-600">
-                {objectUser?.user?.email}
-              </span>
+              <span className="text-xs text-gray-600">{user?.email}</span>
             </div>
             <MoreVertical size={20} />
           </div>

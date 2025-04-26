@@ -1,27 +1,50 @@
 "use client";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { apiPost } from "@/utils/api";
 import SidebarC from "@/components/sidebar";
 import CentersTable from "@/app/(admin)/adoption-centers/page";
-import { useRouter } from "next/navigation";
-
-import { Button } from "primereact/button";
+import EditForm from "@/app/(admin)/adoption-centers/helpers/editForm";
+import { ToastContext } from "@/app/context/ToastContext";
 
 export default function CreateCenter() {
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-  });
+  const [createdCenterId, setCreatedCenterId] = useState(null);
+  const toastRef = useContext(ToastContext);
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const initialFormData = {
+    name: "",
+    description: "",
+  };
+
+  const handleSubmit = async (formData) => {
     try {
-      await apiPost("/adoption-centers", formData);
-      router.push("/adoption-centers");
+      const response = await apiPost("/adoption-centers", formData);
+
+      if (response.status !== 200) {
+        showToast("error", "Error al crear centro");
+        return;
+      }
+
+      const newCenterId = response.data.body.id;
+      showToast("success", "Centro creado correctamente");
+
+      router.push("/adoption-centers/" + newCenterId);
+      setCreatedCenterId(newCenterId);
+      return newCenterId;
     } catch (error) {
-      console.error("Error creating center:", error);
+      showToast("error", "Error al crear centro");
     }
+  };
+
+  const showToast = (severity, message) => {
+    toastRef.current?.show({
+      severity,
+      summary: severity === "success" ? "Éxito" : "Error",
+      detail: message,
+      life: 3000,
+    });
   };
 
   return (
@@ -34,19 +57,12 @@ export default function CreateCenter() {
         onClose={() => router.push("/adoption-centers")}
         onSave={handleSubmit}
       >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block font-medium">Nombre</label>
-            <input
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <Button type="submit" label="Crear" />
-        </form>
+        <EditForm
+          center={initialFormData}
+          onSave={handleSubmit}
+          action="create"
+          createdCenterId={createdCenterId}
+        />
       </SidebarC>
     </>
   );
