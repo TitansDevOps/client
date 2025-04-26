@@ -7,7 +7,6 @@ export const fetchCenters = async (page = 1, limit = 10) => {
     );
     return response.data.body;
   } catch (error) {
-    console.error("Error fetching centers:", error);
     return [];
   }
 };

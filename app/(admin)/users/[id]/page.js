@@ -11,12 +11,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Button } from "primereact/button";
 import CustomTabView from "@/components/CustomTabView";
 import { Galleria } from "primereact/galleria";
-import {
-  Envelope,
-  MapPin,
-  Phone,
-  User
-} from "phosphor-react";
+import { Envelope, MapPin, Phone, User } from "phosphor-react";
 
 export default function UserDetail() {
   const { id } = useParams();
@@ -32,10 +27,10 @@ export default function UserDetail() {
     const fetchCenter = async () => {
       try {
         setLoading(true);
-        const response = await apiGet(`/users/${id}`); 
+        const response = await apiGet(`/users/${id}`);
         setUsers(response.data.body);
       } catch (error) {
-        console.error("Error fetching user:", error);
+        showToast("error", "Error al obtener el usuario");
       } finally {
         setLoading(false);
       }
@@ -50,7 +45,7 @@ export default function UserDetail() {
       router.push("/users");
       showToast("success", "Usuario actualizado correctamente");
     } catch (error) {
-      console.error("Error updating center:", error);
+      showToast("error", "Error al actualizar el usuario");
     }
   };
 
@@ -120,7 +115,6 @@ function DetailView({ users }) {
             <p className="flex items-center gap-2">
               <User size={20} /> {users.role}
             </p>
-        
           </div>
         </div>
       ),
@@ -193,13 +187,13 @@ function EditForm({ users, onSave }) {
       });
 
       if (response.status !== 201) {
-        console.error("Error uploading files:", response.data.message);
+        showToast("error", "Error al subir archivos");
         return;
       }
 
       setFiles(response.data.body);
     } catch (error) {
-      console.error("Error uploading files:", error);
+      showToast("error", "Error al subir archivos");
     }
   };
 
@@ -223,7 +217,7 @@ function EditForm({ users, onSave }) {
     });
 
     if (responseDelete.status !== 200) {
-      console.error("Error deleting files:", responseDelete.data.message);
+      showToast("error", "Error al eliminar archivos");
       return;
     }
 
