@@ -25,9 +25,8 @@ const image =pet.files[0]?.webPath? url + "/" + pet.files[0]?.webPath: "https://
             {pet.name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {pet.adoptionCenter && pet.adoptionCenter.name
-              ? pet.adoptionCenter.name
-              : "Sin centro asignado"}
+            {pet.description? pet.description
+              : "Sin descripción"}
           </Typography>
         </CardContent>
       </CardActionArea>
