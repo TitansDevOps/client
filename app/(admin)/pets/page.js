@@ -1,21 +1,19 @@
 "use client";
-import LayoutPage from "@/app/components/Layout";
 import MultiActionAreaCard from "@/components/petsCard";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "primereact/button";
 import { useState, useEffect } from "react";
 import SidebarC from "@/components/sidebar";
-import EditFormPet from "@/app/(admin)/pets/helpers/editFormPet";
-import { apiGet } from "@/utils/api";
+import { apiGet, apiDelete } from "@/utils/api";
 
 const PetsPage = () => {
   const router = useRouter();
   const pathname = usePathname();
   const isCreate = pathname === "/pets/create";
 
-  const [pets, setPets] = useState([]); // CORREGIDO: inicializa como arreglo vacío
+  const [pets, setPets] = useState([]);
   const [selectedPet, setSelectedPet] = useState(null);
-  const [action, setAction] = useState("show"); // "show" o "edit"
+  const [action, setAction] = useState("show");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -26,10 +24,10 @@ const PetsPage = () => {
     try {
       const response = await apiGet("/pets");
       const data = response.data.body.data;
-      setPets(Array.isArray(data) ? data : []); // CORREGIDO: siempre es array
+      setPets(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error al obtener las mascotas:", error);
-      setPets([]); // Si hay error, deja pets como []
+      setPets([]);
     }
   };
 
@@ -45,11 +43,23 @@ const PetsPage = () => {
     router.push(`/pets/${pet.id}?action=edit`);
   };
 
-  // const handleSubmit = async (formData) => {
-  //   console.log("Mascota guardada:", formData);
-  //   setSidebarOpen(false);
-  //   fetchPets(); // Refresca la lista después de editar
-  // };
+  const handleDelete = async (pet) => {
+    const confirmDelete = window.confirm(`¿Estás seguro de eliminar a "${pet.name}"?`);
+    if (!confirmDelete) return;
+
+    try {
+      const response = await apiDelete(`/pets/${pet.id}`);
+      if (response.status === 200) {
+        alert("Mascota eliminada correctamente.");
+        fetchPets();
+      } else {
+        alert("Error al eliminar la mascota.");
+      }
+    } catch (error) {
+      console.error("Error al eliminar la mascota:", error);
+      alert("Ocurrió un error al eliminar la mascota.");
+    }
+  };
 
   return (
     <div>
@@ -65,39 +75,16 @@ const PetsPage = () => {
         </div>
 
         <div className="flex gap-4 flex-wrap">
-          {Array.isArray(pets) && pets.map((pet) => (
+          {pets.map((pet) => (
             <MultiActionAreaCard
               key={pet.id}
               pet={pet}
               onEdit={handleEdit}
               onDetails={handleDetails}
+              onDelete={handleDelete} // <-- asegurado aquí
             />
           ))}
         </div>
-
-        {/* <SidebarC
-          open={sidebarOpen}
-          className="w-[40rem]"
-          title={action === "edit" ? "Editar Mascota" : "Detalle de la Mascota"}
-          onClose={() => setSidebarOpen(false)}
-          onSave={action === "edit" ? handleSubmit : null}
-        >
-          {selectedPet ? (
-            action === "edit" ? (
-              <EditFormPet pet={selectedPet} onSave={handleSubmit} />
-            ) : (
-              <div>
-                <h2 className="text-xl font-bold">{selectedPet.name}</h2>
-                <p><strong>Descripción:</strong> {selectedPet.description}</p>
-                <p><strong>Centro:</strong> {selectedPet.adoptionCenter?.name || "Sin centro"}</p>
-                <p><strong>Tipo:</strong> {selectedPet.petType?.name || "Sin tipo"}</p>
-                <p><strong>Estado:</strong> {selectedPet.active ? "Activo" : "Inactivo"}</p>
-              </div>
-            )
-          ) : (
-            <p>Cargando...</p>
-          )}
-        </SidebarC> */}
       </div>
     </div>
   );
