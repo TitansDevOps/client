@@ -1,14 +1,11 @@
 "use client";
 import { useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
 import { apiPost, apiGet } from "@/utils/api";
 import SidebarC from "@/components/sidebar";
-import PetsTable from "@/app/(admin)/pets/page";
 import { ToastContext } from "@/app/context/ToastContext";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
-import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 
@@ -18,7 +15,7 @@ export default function CreatePet() {
     description: "",
     active: false,
     adoptionCenterId: null,
-    petType: {id:null},
+    petType: { id: null },
   });
 
   const [adoptionCenters, setAdoptionCenters] = useState([]);
@@ -68,14 +65,14 @@ export default function CreatePet() {
   };
 
   const handleSubmit = async () => {
-    if (!formData.name || !formData.adoptionCenterId || !formData.petType) {
+    if (!formData.name || !formData.adoptionCenterId || !formData.petType.id) {
       showToast("error", "Por favor completa todos los campos obligatorios.");
       return;
     }
 
     const payload = {
       ...formData,
-      adoptionCenterId: Number(formData.adoptionCenterId),
+      adoptionCenterId: Number(formData.adoptionCenterId), // Asegúrate de pasar solo el id
       petTypeId: Number(formData.petType.id),
     };
 
@@ -101,7 +98,6 @@ export default function CreatePet() {
 
   return (
     <>
-      <PetsTable />
       <SidebarC
         open={true}
         className="w-[40rem]"
@@ -135,11 +131,11 @@ export default function CreatePet() {
           <div>
             <label className="block mb-1 font-medium">Centro de Adopción</label>
             <Dropdown
-              value={formData.adoptionCenterId}
+              value={formData.adoptionCenterId} // Usamos el ID directamente
               options={adoptionCenters}
               optionLabel="name"
               optionValue="id"
-              onChange={(e) => handleDropdownChange("adoptionCenterId", e.value)}
+              onChange={(e) => handleDropdownChange("adoptionCenterId", e.value)} // Actualiza con el id
               placeholder="Selecciona un centro"
               className="w-full"
               required
@@ -153,7 +149,7 @@ export default function CreatePet() {
               options={petTypes}
               optionLabel="name"
               optionValue="id"
-              onChange={(e) => handleDropdownChange("petType", {id:e.value})}
+              onChange={(e) => handleDropdownChange("petType", { id: e.value })}
               placeholder="Selecciona un tipo"
               className="w-full"
               required

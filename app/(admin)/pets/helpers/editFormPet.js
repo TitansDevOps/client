@@ -7,12 +7,12 @@ import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 import { apiGet, apiPut } from "@/utils/api";
 
-export default function EditFormPet({ pet, onSave }) {
+export default function EditFormPet({ pet, onSave, edit = false }) {
   const [formData, setFormData] = useState({
     name: pet?.name || "",
     description: pet?.description || "",
     active: pet?.active || false,
-    adoptionCenterId: pet?.adoptionCenterId || null,
+    adoptionCenterId: pet?.adoptionCenter?.id || null, // Guardar el id solo
     petType: { id: pet?.petType?.id || null },
   });
 
@@ -71,16 +71,15 @@ export default function EditFormPet({ pet, onSave }) {
       alert("Por favor completa todos los campos obligatorios.");
       return;
     }
-  
+
     const payload = {
       name: formData.name,
       description: formData.description,
       active: formData.active,
-      adoptionCenterId: Number(formData.adoptionCenterId),
+      adoptionCenterId: Number(formData.adoptionCenterId), // Se usa el id para actualizar
       petType: { id: Number(formData.petType.id) },
-      attributeValues: formData.attributeValues || []
     };
-  
+
     try {
       await apiPut(`/pets/${pet.id}`, payload);
       if (onSave) {

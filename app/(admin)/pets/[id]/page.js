@@ -70,7 +70,7 @@ export default function PetDetail() {
         {loading ? (
           <p>Cargando...</p>
         ) : action === "edit" ? (
-          <EditFormPet pet={pet} onSave={handleSave} />
+          <EditFormPet edit={true} pet={pet} onSave={handleSave} />
         ) : (
           <DetailView pet={pet} />
         )}
@@ -95,12 +95,28 @@ function DetailView({ pet }) {
       content: (
         <div className="space-y-3 text-sm">
           <h3 className="text-2xl font-semibold">{pet.name}</h3>
-          <p className="text-gray-600">{pet.description}</p>
 
           <div className="space-y-2 pt-4">
             <label className="block mb-1 font-medium">Tipo</label>
             <p>{pet.petType.name}</p>
           </div>
+          
+          <div className="space-y-2 pt-4">
+            <label className="block mb-1 font-medium">Centro de adopción</label>
+            <p>{pet.adoptionCenter.name}</p>
+          </div>
+
+          <div className="space-y-2 pt-4">
+            <label className="block mb-1 font-medium">Descripción</label>
+            <p>{pet.description}</p>
+          </div>
+          
+          {
+            console.log("Hola mascota") 
+          }
+          {
+            console.log(pet) 
+          }
         </div>
       ),
     },
