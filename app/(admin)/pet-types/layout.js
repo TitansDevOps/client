@@ -5,7 +5,7 @@ import { ToastProvider } from "@/app/context/ToastContext";
 
 export default function PetsLayout({ children, table }) {
   const pathname = usePathname();
-  const isBaseRoute = pathname === "/pets-type";
+  const isBaseRoute = pathname === "/pet-type";
 
   return (
     <ToastProvider>
