@@ -3,6 +3,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import heroPets from '../assets/hero-section-pets.png';
 
 export default function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -13,7 +14,7 @@ export default function HeroSection() {
 
   return (
     <section 
-      id="hero" // ID esencial para el funcionamiento
+      id="hero" 
       className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-blue-100 relative overflow-hidden"
     >
       {/* Elementos decorativos animados */}
@@ -52,7 +53,7 @@ export default function HeroSection() {
               className="relative w-full aspect-square max-w-xl"
             >
               <Image
-                src="/hero-dog.png"
+                src={heroPets}
                 alt="Perro esperando ser adoptado"
                 fill
                 className="object-contain"
