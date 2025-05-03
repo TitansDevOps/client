@@ -80,11 +80,22 @@ export function RegisterForm({ className, ...props }) {
       const response = await apiPost("/auth/register", registerForm);
 
       if (response.status === 201) {
-        login(response.data.body.token, response.data.body.user);
+        const user = response.data.body.user;
+        const token = response.data.body.token;
+
+        login(token, user);
+
+        let redirectPath = "/dashboard";
+        if (user.role === "admin" || user.role === "operator") {
+          redirectPath = "/dashboard";
+        } else if (user.role === "user") {
+          redirectPath = "/user-home";
+        }
+
         setToastData({
           message: response.data.message,
           type: "success",
-          onClose: () => router.push("/dashboard"),
+          onClose: () => router.push(redirectPath),
         });
         setIsFormValid(true);
       } else {
