@@ -59,9 +59,9 @@ export default function SidebarDashboard({ isOpenSidebar }) {
             <SidebarItem
               icon={<Cog size={20} style={{ color: "black" }} />}
               text={<span style={{ color: "black" }}>Tipos de Mascotas</span>}
-              onClick={() => router.push("/pets-types")}
+              onClick={() => router.push("/pet-types")}
             />
-            
+
             <hr className="my-3" />
             <SidebarItem
               icon={<Settings size={20} style={{ color: "black" }} />}
