@@ -60,12 +60,23 @@ export function LoginForm({ className, ...props }) {
       const response = await apiPost("/auth/login", { email, password });
 
       if (response.status === 200) {
-        login(response.data.body.token, response.data.body.user);
+        const user = response.data.body.user;
+        const token = response.data.body.token;
+
+        login(token, user);
+
+        let redirectPath = "/dashboard";
+        if (user.role === "admin" || user.role === "operator") {
+          redirectPath = "/dashboard";
+        } else if (user.role === "user") {
+          redirectPath = "/user-home";
+        }
+
         setToastData({
           message: response.data.message,
           type: "success",
           onClose: () => {
-            router.push("/dashboard");
+            router.push(redirectPath);
           },
         });
       } else {
