@@ -65,14 +65,15 @@ const PetsPage = () => {
         </div>
 
         <div className="flex gap-4 flex-wrap">
-          {Array.isArray(pets) && pets.map((pet) => (
-            <MultiActionAreaCard
-              key={pet.id}
-              pet={pet}
-              onEdit={handleEdit}
-              onDetails={handleDetails}
-            />
-          ))}
+          {Array.isArray(pets) &&
+            pets.map((pet) => (
+              <MultiActionAreaCard
+                key={pet.id}
+                pet={pet}
+                onEdit={handleEdit}
+                onDetails={handleDetails}
+              />
+            ))}
         </div>
 
         {/* <SidebarC

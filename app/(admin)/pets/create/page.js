@@ -18,7 +18,7 @@ export default function CreatePet() {
     description: "",
     active: false,
     adoptionCenterId: null,
-    petType: {id:null},
+    petType: { id: null },
   });
 
   const [adoptionCenters, setAdoptionCenters] = useState([]);
@@ -139,7 +139,9 @@ export default function CreatePet() {
               options={adoptionCenters}
               optionLabel="name"
               optionValue="id"
-              onChange={(e) => handleDropdownChange("adoptionCenterId", e.value)}
+              onChange={(e) =>
+                handleDropdownChange("adoptionCenterId", e.value)
+              }
               placeholder="Selecciona un centro"
               className="w-full"
               required
@@ -153,7 +155,7 @@ export default function CreatePet() {
               options={petTypes}
               optionLabel="name"
               optionValue="id"
-              onChange={(e) => handleDropdownChange("petType", {id:e.value})}
+              onChange={(e) => handleDropdownChange("petType", { id: e.value })}
               placeholder="Selecciona un tipo"
               className="w-full"
               required
@@ -161,7 +163,12 @@ export default function CreatePet() {
           </div>
 
           <div className="pt-4">
-            <Button type="button" label="Guardar Mascota" onClick={handleSubmit} className="w-full" />
+            <Button
+              type="button"
+              label="Guardar Mascota"
+              onClick={handleSubmit}
+              className="w-full"
+            />
           </div>
         </form>
       </SidebarC>

@@ -22,7 +22,7 @@ export default function LayoutPage({ children }) {
 
   return (
     <div className="relative min-h-screen bg-slate-50 w-full">
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["admin", "operator"]}>
         <div className={`fixed md:static z-10`}>
           <SidebarDashboard isOpenSidebar={setIsOpen} />
         </div>
