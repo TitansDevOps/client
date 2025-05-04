@@ -1,5 +1,40 @@
 # Changelog
 
+## [1.4.0](https://github.com/TitansDevOps/client/compare/v1.3.0...v1.4.0) (2025-04-26)
+
+### Features
+
+- adoption centers create ([554f546](https://github.com/TitansDevOps/client/commit/554f54654df129e4f11e8bc2c22e18a3fb0ce408))
+- cambios en usuario ([aaa709e](https://github.com/TitansDevOps/client/commit/aaa709eab4561f35083171a41c28f76c2036af81))
+- cambios en usuarios ([140e942](https://github.com/TitansDevOps/client/commit/140e9420f9c57e96552cb7bffa904fc66656e22b))
+- carpeta para sidebar ([5079d7e](https://github.com/TitansDevOps/client/commit/5079d7e9a718105110000d08776871dea301fcc9))
+- crud centros ([529db07](https://github.com/TitansDevOps/client/commit/529db07dd72c1393bb9c5932194cf88a9c2284be))
+- diseño del sidebar ([a40c81f](https://github.com/TitansDevOps/client/commit/a40c81fbd04972de4d93cf4aec48974b89c45966))
+- gestionar archivos en frontend ([afb2f48](https://github.com/TitansDevOps/client/commit/afb2f48ce80989cec7c2caa5fe76c697faef06a0))
+- listado de usuarios ([110e64e](https://github.com/TitansDevOps/client/commit/110e64ebad4661ffeaa82fe275550bf5b88a8e69))
+- listado de usuarios ([c610746](https://github.com/TitansDevOps/client/commit/c610746472157d873729d1575f292b3635965037))
+- sidebar ([071c928](https://github.com/TitansDevOps/client/commit/071c928678e5f82b721d9dd13d3be9de1d819871))
+- sidebar detail, gallery, custom tabs and more details ([61f4812](https://github.com/TitansDevOps/client/commit/61f4812b224964caf8ea01cc54c1fa239f84f8f1))
+- sidebar into adoption-centers ([8a2af91](https://github.com/TitansDevOps/client/commit/8a2af91eba32be3f26d6ffa9598beb546fe6038e))
+- users ([526311b](https://github.com/TitansDevOps/client/commit/526311b91b9e95ffce9cebbd55d69a73c6450f8b))
+- users module ([526311b](https://github.com/TitansDevOps/client/commit/526311b91b9e95ffce9cebbd55d69a73c6450f8b))
+
+### Bug Fixes
+
+- conflicts + format ([cc5125c](https://github.com/TitansDevOps/client/commit/cc5125c50d93b59b7551c5f71c4948c5e0a5f1e1))
+- datatble styles ([9004a46](https://github.com/TitansDevOps/client/commit/9004a466faa532b257e6c4f98937225a10c606aa))
+- datatble styles ([5a05adc](https://github.com/TitansDevOps/client/commit/5a05adc55b6b54b572563d0474c0334bcb2f9e14))
+- delete package.lock ([4640086](https://github.com/TitansDevOps/client/commit/46400862808d70502d38dff3f383ed7a5e5484ba))
+- files in adoption centers module ([bdda652](https://github.com/TitansDevOps/client/commit/bdda652b21c09e7d7b5e639bb2e21133da5d90ca))
+- panel admin, estilos y centros de adopción ([ac825f9](https://github.com/TitansDevOps/client/commit/ac825f9129779a400874520d355ef62e889b09c6))
+- panel admin, estilos y centros de adopción ([91f93a6](https://github.com/TitansDevOps/client/commit/91f93a6181796b3cceb8b3167c652519df242c56))
+- protected route ([959df41](https://github.com/TitansDevOps/client/commit/959df41b0549263a6e96ab06dfd3a05dfb485f37))
+- users ([88708cc](https://github.com/TitansDevOps/client/commit/88708cc4733b2f658ad4e51a96b7a8aa9cfcfd5d))
+- vercel config ([db5395b](https://github.com/TitansDevOps/client/commit/db5395bbbd2b70af81a7e6fae3a123236388c11c))
+- vercel config ([b5772a9](https://github.com/TitansDevOps/client/commit/b5772a9835da82229315a8c5f0e4cadfee93c591))
+- vercel config ([fe5705f](https://github.com/TitansDevOps/client/commit/fe5705f293cdcfc94502d252170efd4562c9730f))
+- vercel config ([056df08](https://github.com/TitansDevOps/client/commit/056df0857575398eb3c05753ff0e02da8ba6526d))
+
 ## [1.3.0](https://github.com/TitansDevOps/client/compare/v1.2.0...v1.3.0) (2025-04-11)
 
 ### Features

@@ -71,16 +71,16 @@ export default function EditFormPet({ pet, onSave }) {
       alert("Por favor completa todos los campos obligatorios.");
       return;
     }
-  
+
     const payload = {
       name: formData.name,
       description: formData.description,
       active: formData.active,
       adoptionCenterId: Number(formData.adoptionCenterId),
       petType: { id: Number(formData.petType.id) },
-      attributeValues: formData.attributeValues || []
+      attributeValues: formData.attributeValues || [],
     };
-  
+
     try {
       await apiPut(`/pets/${pet.id}`, payload);
       if (onSave) {
@@ -154,7 +154,12 @@ export default function EditFormPet({ pet, onSave }) {
       </div>
 
       <div className="pt-4">
-        <Button type="button" label="Guardar Cambios" onClick={handleSubmit} className="w-full" />
+        <Button
+          type="button"
+          label="Guardar Cambios"
+          onClick={handleSubmit}
+          className="w-full"
+        />
       </div>
     </form>
   );
