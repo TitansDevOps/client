@@ -1,4 +1,10 @@
-import { useRef, useImperativeHandle, forwardRef, useState } from "react";
+import {
+  useRef,
+  useImperativeHandle,
+  forwardRef,
+  useState,
+  useEffect,
+} from "react";
 import { X, ArrowsOut, ArrowsIn } from "phosphor-react";
 import PropTypes from "prop-types";
 import "./styles/SidebarC.css";
@@ -14,6 +20,10 @@ const SidebarC = forwardRef((props, ref) => {
   } = props;
   const [isFullScreen, setIsFullScreen] = useState(fullScreen);
   const bodyRef = useRef(null);
+
+  useEffect(() => {
+    setIsFullScreen(fullScreen);
+  }, [fullScreen]);
 
   const handleClose = () => {
     if (onClose) {

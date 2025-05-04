@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   Settings,
   LogOut,
+  Cog,
 } from "lucide-react";
 
 export default function SidebarDashboard({ isOpenSidebar }) {
@@ -55,6 +56,12 @@ export default function SidebarDashboard({ isOpenSidebar }) {
               text={<span style={{ color: "black" }}>Users</span>}
               onClick={() => router.push("/users")}
             />
+            <SidebarItem
+              icon={<Cog size={20} style={{ color: "black" }} />}
+              text={<span style={{ color: "black" }}>Tipos de Mascotas</span>}
+              onClick={() => router.push("/pet-types")}
+            />
+
             <hr className="my-3" />
             <SidebarItem
               icon={<Settings size={20} style={{ color: "black" }} />}
