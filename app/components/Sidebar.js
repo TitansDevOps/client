@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   Settings,
   LogOut,
+  Cat,
   Cog,
 } from "lucide-react";
 
@@ -50,6 +51,11 @@ export default function SidebarDashboard({ isOpenSidebar }) {
               icon={<BarChart3 size={20} style={{ color: "black" }} />}
               onClick={() => router.push("/adoption-centers")}
               text={<span style={{ color: "black" }}>Centros de Adopción</span>}
+            />
+            <SidebarItem
+              icon={<Cat size={20} style={{ color: "black" }} />}
+              onClick={() => router.push("/pets")}
+              text={<span style={{ color: "black" }}>Mascotas</span>}
             />
             <SidebarItem
               icon={<UserCircle size={20} style={{ color: "black" }} />}
