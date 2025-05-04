@@ -2,13 +2,12 @@
 
 import { useEffect, useState, useContext } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { apiGet, apiPost } from "@/utils/api";
+import { apiGet, apiPost, apiPut } from "@/utils/api";
 import { ToastContext } from "@/app/context/ToastContext";
 import PetsTypesPage from "@/app/(admin)/pet-types/page";
 import EditForm from "@/app/(admin)/pet-types/helpers/EditForm";
 import SidebarC from "@/components/sidebar";
 import CustomTabView from "@/components/CustomTabView";
-
 import { Pencil } from "lucide-react";
 
 export default function AddAttributesPage() {
@@ -20,7 +19,7 @@ export default function AddAttributesPage() {
 
   const [loading, setLoading] = useState(true);
   const [petType, setPetType] = useState(null);
-  const [selectedAttributes, setSelectedAttributes] = useState([]);
+  const [sidebarFullScreen, setSidebarFullScreen] = useState(false);
 
   useEffect(() => {
     fetchPetType();
@@ -29,43 +28,31 @@ export default function AddAttributesPage() {
   const fetchPetType = async () => {
     try {
       const response = await apiGet(`/pet-types/${id}`);
-      console.log("response", response);
-      console.log(response.data.body);
       setPetType(response.data.body);
     } catch (error) {
-      console.error("Error fetching pet type:", error);
+      showToast("error", "Error al obtener el tipo de mascota");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  // const handleAttributeChange = (attributeId) => {
-  //     setSelectedAttributes((prevSelected) =>
-  //         prevSelected.includes(attributeId)
-  //             ? prevSelected.filter((id) => id !== attributeId)
-  //             : [...prevSelected, attributeId]
-  //     );
-  // };
-
-  const handleSave = async () => {
+  const handleSave = async (formData) => {
     try {
-      const payload = {
-        name: petType.name,
-        attributes: selectedAttributes.map((id) => ({ id })),
-      };
+      const endpoint = action === "edit" ? `/pet-types/${id}` : "/pet-types";
+      const method = action === "edit" ? apiPut : apiPost;
 
-      const response = await apiPost(
-        `/pets-types/${id}/assign-attributes`,
-        payload,
-      );
+      const response = await method(endpoint, formData);
 
       if (response.status === 200) {
-        showToast("success", "Atributos asignados correctamente");
-        setTimeout(() => router.push("/pets-types"), 1500);
+        showToast("success", "Tipo de mascota editado con éxito");
       } else {
-        showToast("error", "Error al asignar atributos");
+        showToast("error", "Error al realizar la operación");
       }
+
+      router.push(`/pet-types/${id}?action=show`);
+      fetchPetType();
     } catch (error) {
-      showToast("error", "Error al asignar atributos");
+      showToast("error", "Error al realizar la operación");
     }
   };
 
@@ -78,20 +65,31 @@ export default function AddAttributesPage() {
     });
   };
 
+  const handleCancel = () => {
+    router.push(`/pet-types/${id}?action=show`);
+  };
+
   return (
     <>
       <PetsTypesPage />
       <SidebarC
+        fullScreen={sidebarFullScreen}
         open={true}
         className="w-[30rem]"
-        title={action === "edit" ? "Editar Centro" : "Detalle del Centro"}
+        title={action === "edit" ? "Editar tipo" : "Detalle del tipo"}
         onClose={() => router.push("/pet-types")}
         onSave={action === "edit" ? handleSave : null}
       >
         {loading ? (
           <p>Cargando...</p>
         ) : action === "edit" ? (
-          <EditForm petType={petType} onSave={handleSave} />
+          <EditForm
+            petType={petType}
+            onSave={handleSave}
+            action={action}
+            onCancel={handleCancel}
+            fullScreen={setSidebarFullScreen}
+          />
         ) : (
           <DetailView type={petType} />
         )}
@@ -101,54 +99,31 @@ export default function AddAttributesPage() {
 }
 
 function DetailView({ type }) {
-  // const backendUrl = getEnv();
-
-  // const images = (petType?.files || []).map((file) => ({
-  //   itemImageSrc: `${backendUrl}/${file.webPath}`,
-  //   thumbnailImageSrc: `${backendUrl}/${file.webPath}`,
-  //   alt: `Imagen ${file.id}`,
-  //   title: file.filePath,
-  // }));
-
-  console.log("type", type);
   const tabs = [
     {
       label: "Información General",
       content: (
         <div className="space-y-3 text-sm">
           <h3 className="text-2xl font-semibold">{type?.name}</h3>
+
+          <div className="flex flex-col space-y-2">
+            <div className="flex items-center space-x-2">
+              <span className="text-gray-500">Atributos:</span>
+              <span className="text-sm text-gray-500">
+                {type?.attributes.length}
+              </span>
+            </div>
+            {type?.attributes.length > 0 && (
+              <ul className="list-disc list-inside text-sm text-gray-500">
+                {type.attributes.map((a) => (
+                  <li key={a.name}>{a.name}</li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       ),
     },
-    //   {
-    //     label: "Archivos",
-    //     content:
-    //       images.length > 0 ? (
-    //         <Galleria
-    //           value={images}
-    //           numVisible={3}
-    //           style={{ maxWidth: "100%" }}
-    //           showThumbnails={true}
-    //           showItemNavigators
-    //           showItemNavigatorsOnHover
-    //           circular
-    //           autoPlay
-    //           transitionInterval={4000}
-    //           item={(item) => (
-    //             <img src={item.itemImageSrc} alt={item.alt} className="w-full" />
-    //           )}
-    //           thumbnail={(item) => (
-    //             <img
-    //               src={item.thumbnailImageSrc}
-    //               alt={item.alt}
-    //               className="max-h-8 object-cover rounded-md"
-    //             />
-    //           )}
-    //         />
-    //       ) : (
-    //         <p className="text-gray-500">No hay archivos disponibles.</p>
-    //       ),
-    //   },
     {
       label: (
         <>
