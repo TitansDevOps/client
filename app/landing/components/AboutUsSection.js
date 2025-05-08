@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import about1 from "../assets/about/about1copy.jpg";
+import about2 from "../assets/about/about2.jpg";
 
 export default function AboutUsSection({ isVisible }) {
   return (
@@ -87,7 +89,7 @@ export default function AboutUsSection({ isVisible }) {
                 className="absolute top-0 left-0 w-full h-[65%] md:h-[70%] rounded-xl overflow-hidden shadow-lg"
               >
                 <Image
-                  src="/about-1.jpg"
+                  src={about1}
                   alt="Mascotas felices"
                   fill
                   className="object-cover"
@@ -102,7 +104,7 @@ export default function AboutUsSection({ isVisible }) {
                 className="absolute bottom-0 left-0 w-[45%] md:w-[40%] h-[30%] rounded-xl overflow-hidden shadow-lg border-2 border-white"
               >
                 <Image
-                  src="/about-2.jpg"
+                  src={about2}
                   alt="Familia con mascota"
                   fill
                   className="object-cover"

@@ -1,6 +1,11 @@
-"use client";
-import { useEffect, useRef, useState } from "react";
-import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
+'use client';
+import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
+import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import avatar1 from '../assets/testimonials/1.jpg';
+import avatar2 from '../assets/testimonials/2.jpg';  
+import avatar3 from '../assets/testimonials/3.jpg';
+import avatar4 from '../assets/testimonials/4.jpg';
 
 export default function TestimonialsSection() {
   const testimonials = [
@@ -10,7 +15,7 @@ export default function TestimonialsSection() {
         "Adoptar a Luna fue lo mejor que nos pasó. Se adaptó increíblemente rápido y llena nuestro hogar de alegría.",
       author: "María González",
       role: "Dueña de Luna",
-      avatar: "/avatars/1.jpg",
+      avatar: avatar1, // Cambiado de src a avatar para consistencia
     },
     {
       id: 2,
@@ -18,7 +23,7 @@ export default function TestimonialsSection() {
         "El proceso de adopción fue muy profesional. Nos guiaron en cada paso y hoy tenemos un compañero fiel.",
       author: "Carlos Martínez",
       role: "Dueño de Max",
-      avatar: "/avatars/2.jpg",
+      avatar: avatar2, // Cambiado de img a avatar
     },
     {
       id: 3,
@@ -26,7 +31,7 @@ export default function TestimonialsSection() {
         "No me arrepiento para nada de haber adoptado. La conexión con mi perro es algo que no se puede explicar.",
       author: "Ana Rodríguez",
       role: "Dueña de Toby",
-      avatar: "/avatars/3.jpg",
+      avatar: avatar3, // Cambiado de img a avatar
     },
     {
       id: 4,
@@ -34,8 +39,8 @@ export default function TestimonialsSection() {
         "Después de adoptar a Mimi, entendí el verdadero significado del amor incondicional. Recomiendo adoptar 100%.",
       author: "Jorge Sánchez",
       role: "Dueño de Mimi",
-      avatar: "/avatars/4.jpg",
-    },
+      avatar: avatar4, // Cambiado de img a avatar
+    }
   ];
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -64,7 +69,7 @@ export default function TestimonialsSection() {
   };
 
   return (
-    <section className="py-16 bg-white">
+    <section id="testimonials" className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-4 text-gray-800">
           Historias que nos inspiran
@@ -88,10 +93,12 @@ export default function TestimonialsSection() {
                     &quot;{testimonial.quote}&quot;
                   </p>
                   <div className="flex items-center">
-                    <img
-                      src={testimonial.avatar}
-                      alt={testimonial.author}
+                    <Image 
+                      src={testimonial.avatar} 
+                      alt={testimonial.author} 
                       className="w-12 h-12 rounded-full object-cover mr-4 border-2 border-blue-200"
+                      width={48}
+                      height={48}
                     />
                     <div>
                       <h4 className="font-semibold text-gray-800">

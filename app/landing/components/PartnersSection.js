@@ -1,17 +1,23 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+import vetcare from '../assets/partners/vetcare.jpg';
+import petfood from '../assets/partners/petfood.jpg';
+import animallove from '../assets/partners/animallove.jpg';
+import paws from '../assets/partners/paws.jpg';
+import happypets from '../assets/partners/happypets.jpg';
+import wildheart from '../assets/partners/wildheart.jpg';
 
 export default function PartnersSection() {
   const partnerSliderRef = useRef(null);
 
   const partners = [
-    { id: 1, name: "VetCare", img: "/partners/vetcare.svg" },
-    { id: 2, name: "PetFood", img: "/partners/petfood.svg" },
-    { id: 3, name: "AnimalLove", img: "/partners/animallove.svg" },
-    { id: 4, name: "Paws", img: "/partners/paws.svg" },
-    { id: 5, name: "HappyPets", img: "/partners/happypets.svg" },
-    { id: 6, name: "WildHeart", img: "/partners/wildheart.svg" },
+    { id: 1, name: "VetCare", img: vetcare },
+    { id: 2, name: "PetFood", img: petfood },
+    { id: 3, name: "AnimalLove", img: animallove },
+    { id: 4, name: "Paws", img: paws },
+    { id: 5, name: "HappyPets", img: happypets },
+    { id: 6, name: "WildHeart", img: wildheart },
   ];
 
   const extendedPartners = [...partners, ...partners];
