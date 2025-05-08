@@ -3,7 +3,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import heroPets from '../assets/hero-section-pets.png';
+import heroPets from "../assets/hero-section-pets.png";
 
 export default function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -13,8 +13,8 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section 
-      id="hero" 
+    <section
+      id="hero"
       className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-blue-100 relative overflow-hidden"
     >
       {/* Elementos decorativos animados */}

@@ -1,11 +1,11 @@
-'use client';
-import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
-import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
-import avatar1 from '../assets/testimonials/1.jpg';
-import avatar2 from '../assets/testimonials/2.jpg';  
-import avatar3 from '../assets/testimonials/3.jpg';
-import avatar4 from '../assets/testimonials/4.jpg';
+"use client";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import avatar1 from "../assets/testimonials/1.jpg";
+import avatar2 from "../assets/testimonials/2.jpg";
+import avatar3 from "../assets/testimonials/3.jpg";
+import avatar4 from "../assets/testimonials/4.jpg";
 
 export default function TestimonialsSection() {
   const testimonials = [
@@ -40,7 +40,7 @@ export default function TestimonialsSection() {
       author: "Jorge Sánchez",
       role: "Dueño de Mimi",
       avatar: avatar4, // Cambiado de img a avatar
-    }
+    },
   ];
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -93,9 +93,9 @@ export default function TestimonialsSection() {
                     &quot;{testimonial.quote}&quot;
                   </p>
                   <div className="flex items-center">
-                    <Image 
-                      src={testimonial.avatar} 
-                      alt={testimonial.author} 
+                    <Image
+                      src={testimonial.avatar}
+                      alt={testimonial.author}
                       className="w-12 h-12 rounded-full object-cover mr-4 border-2 border-blue-200"
                       width={48}
                       height={48}

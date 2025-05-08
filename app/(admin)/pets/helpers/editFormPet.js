@@ -8,7 +8,7 @@ import { Button } from "primereact/button";
 import { apiGet, apiPut, apiPost, getEnv } from "@/utils/api";
 import { ToastContext } from "@/app/context/ToastContext";
 
-export default function EditFormPet({ pet, onSave }) {
+export default function EditFormPet({ pet, onSave, edit = true, onSaveFiles }) {
   const toastRef = useContext(ToastContext);
   const backendUrl = getEnv();
 
@@ -22,7 +22,7 @@ export default function EditFormPet({ pet, onSave }) {
 
   const [adoptionCenters, setAdoptionCenters] = useState([]);
   const [petTypes, setPetTypes] = useState([]);
-  const [files, setFiles] = useState(pet.files || []);
+  const [files, setFiles] = useState(pet?.files || []);
   const [filesToDelete, setFilesToDelete] = useState([]);
   const [fileToPreview, setFileToPreview] = useState(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -83,8 +83,14 @@ export default function EditFormPet({ pet, onSave }) {
           name: file.name,
           base64: base64.split(",")[1],
         };
-      })
+      }),
     );
+
+    if (!edit) {
+      onSaveFiles(filesToUpload);
+      setFiles((prev) => [...prev, ...filesToUpload]);
+      return;
+    }
 
     const response = await apiPost("/file/upload-base64", {
       typeEntity: "PET",
@@ -123,6 +129,11 @@ export default function EditFormPet({ pet, onSave }) {
   };
 
   const handleSubmit = async () => {
+    if (!edit) {
+      onSave(formData);
+      return;
+    }
+
     if (!formData.name || !formData.adoptionCenterId || !formData.petType.id) {
       showToast("error", "Completa todos los campos.");
       return;
@@ -149,11 +160,22 @@ export default function EditFormPet({ pet, onSave }) {
   };
 
   return (
-    <>
-      <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+    <div className="p-4 bg-white rounded shadow-md">
+      <form
+        className="space-y-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
         <div>
           <label className="block mb-1 font-medium">Nombre</label>
-          <InputText name="name" value={formData.name} onChange={handleChange} className="w-full" />
+          <InputText
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full"
+          />
         </div>
 
         <div>
@@ -217,7 +239,10 @@ export default function EditFormPet({ pet, onSave }) {
             {files.length > 0 ? (
               <ul className="divide-y">
                 {files.map((file) => (
-                  <li key={file.id} className="p-3 flex justify-between items-center">
+                  <li
+                    key={file.id}
+                    className="p-3 flex justify-between items-center"
+                  >
                     <div className="flex items-center gap-2">
                       <span>{file.name || file.filename}</span>
                       <button
@@ -258,8 +283,13 @@ export default function EditFormPet({ pet, onSave }) {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-4xl max-h-[90vh] overflow-auto">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium">{fileToPreview.name || fileToPreview.filename}</h3>
-              <button onClick={() => setIsPreviewOpen(false)} className="text-gray-500 hover:text-gray-700">
+              <h3 className="text-lg font-medium">
+                {fileToPreview.name || fileToPreview.filename}
+              </h3>
+              <button
+                onClick={() => setIsPreviewOpen(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
                 <i className="pi pi-times"></i>
               </button>
             </div>
@@ -289,6 +319,6 @@ export default function EditFormPet({ pet, onSave }) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
-'use client';
-import { useState } from 'react';
-import { Mars, Venus, Heart, MapPin } from 'lucide-react';
-import Image from 'next/image';
+"use client";
+import { useState } from "react";
+import { Mars, Venus, Heart, MapPin } from "lucide-react";
+import Image from "next/image";
 
 export default function PetCard({ pet, isFeatured = false }) {
   const [isLiked, setIsLiked] = useState(false);
@@ -21,7 +21,7 @@ export default function PetCard({ pet, isFeatured = false }) {
         />
         <button
           onClick={() => setIsLiked(!isLiked)}
-          className={`absolute top-3 right-3 p-1.5 rounded-full ${isLiked ? 'bg-red-100 text-red-500' : 'bg-white text-gray-400'} transition-colors z-10`}  
+          className={`absolute top-3 right-3 p-1.5 rounded-full ${isLiked ? "bg-red-100 text-red-500" : "bg-white text-gray-400"} transition-colors z-10`}
         >
           <Heart className="h-4 w-4" fill={isLiked ? "currentColor" : "none"} />
         </button>

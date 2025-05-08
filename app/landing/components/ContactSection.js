@@ -1,7 +1,7 @@
-'use client';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import contact1 from '../assets/contact/contact1.jpg';
+"use client";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import contact1 from "../assets/contact/contact1.jpg";
 
 export default function ContactSection() {
   return (

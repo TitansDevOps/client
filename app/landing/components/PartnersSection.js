@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { motion } from 'framer-motion';
-import vetcare from '../assets/partners/vetcare.jpg';
-import petfood from '../assets/partners/petfood.jpg';
-import animallove from '../assets/partners/animallove.jpg';
-import paws from '../assets/partners/paws.jpg';
-import happypets from '../assets/partners/happypets.jpg';
-import wildheart from '../assets/partners/wildheart.jpg';
+import { motion } from "framer-motion";
+import vetcare from "../assets/partners/vetcare.jpg";
+import petfood from "../assets/partners/petfood.jpg";
+import animallove from "../assets/partners/animallove.jpg";
+import paws from "../assets/partners/paws.jpg";
+import happypets from "../assets/partners/happypets.jpg";
+import wildheart from "../assets/partners/wildheart.jpg";
 
 export default function PartnersSection() {
   const partnerSliderRef = useRef(null);

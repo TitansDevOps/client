@@ -19,7 +19,9 @@ export default function EditForm({
   const [name, setName] = useState(petType?.name || "");
   const [attributes, setAttributes] = useState([]);
   const [selectedAttributes, setSelectedAttributes] = useState(
-    petType?.attributes?.map((a) => a.id) || [],
+    Array.isArray(petType?.attributes)
+      ? petType?.attributes?.map((a) => a.id)
+      : [] || [],
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingAttribute, setEditingAttribute] = useState(null);

@@ -17,7 +17,7 @@ export default function Header() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="w-full bg-white py-4 shadow-sm" 
+      className="w-full bg-white py-4 shadow-sm"
     >
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center max-w-6xl mx-auto">
@@ -38,7 +38,7 @@ export default function Header() {
 
           {/* Menú con animaciones hover */}
           <nav className="hidden md:flex items-center space-x-8 ml-12">
-            {['help', 'testimonials', 'about', 'contact'].map((item, index) => (
+            {["help", "testimonials", "about", "contact"].map((item, index) => (
               <motion.div
                 key={item}
                 initial={{ opacity: 0, x: -10 }}
@@ -50,10 +50,10 @@ export default function Header() {
                   href={`#${item}`}
                   className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
                 >
-                  {item === 'help' && 'Cómo ayudar'}
-                  {item === 'testimonials' && 'Historias'}
-                  {item === 'about' && 'Nosotros'}
-                  {item === 'contact' && 'Contacto'}
+                  {item === "help" && "Cómo ayudar"}
+                  {item === "testimonials" && "Historias"}
+                  {item === "about" && "Nosotros"}
+                  {item === "contact" && "Contacto"}
                 </Link>
               </motion.div>
             ))}

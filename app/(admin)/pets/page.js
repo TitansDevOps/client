@@ -1,20 +1,19 @@
 "use client";
 import MultiActionAreaCard from "@/components/petsCard";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Button } from "primereact/button";
-import { useState, useEffect } from "react";
-import SidebarC from "@/components/sidebar";
+import { useState, useEffect, useContext } from "react";
+import { ToastContext } from "@/app/context/ToastContext";
 import { apiGet, apiDelete } from "@/utils/api";
+import Modal from "@/components/Modal";
 
 const PetsPage = () => {
   const router = useRouter();
-  const pathname = usePathname();
-  const isCreate = pathname === "/pets/create";
-
   const [pets, setPets] = useState([]);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedPet, setSelectedPet] = useState(null);
-  const [action, setAction] = useState("show");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toastRef = useContext(ToastContext);
 
   useEffect(() => {
     fetchPets();
@@ -44,25 +43,53 @@ const PetsPage = () => {
   };
 
   const handleDelete = async (pet) => {
-    const confirmDelete = window.confirm(`¿Estás seguro de eliminar a "${pet.name}"?`);
-    if (!confirmDelete) return;
+    setSelectedPet(pet);
+    setDeleteModalOpen(true);
+  };
 
+  const handleDeleteConfirm = async () => {
+    await deletePet(selectedPet);
+    setDeleteModalOpen(false);
+    setSelectedPet(null);
+  };
+
+  const showToast = (severity, message) => {
+    toastRef.current?.show({
+      severity,
+      summary: severity === "success" ? "Éxito" : "Error",
+      detail: message,
+      life: 3000,
+    });
+  };
+
+  const deletePet = async (pet) => {
     try {
       const response = await apiDelete(`/pets/${pet.id}`);
       if (response.status === 200) {
-        alert("Mascota eliminada correctamente.");
+        showToast("success", "Mascota eliminada correctamente.");
         fetchPets();
       } else {
-        alert("Error al eliminar la mascota.");
+        showToast("error", "Error al eliminar la mascota.");
       }
     } catch (error) {
-      console.error("Error al eliminar la mascota:", error);
-      alert("Ocurrió un error al eliminar la mascota.");
+      showToast("error", "Ocurrió un error al eliminar la mascota.");
     }
   };
 
   return (
     <div>
+      <Modal
+        open={deleteModalOpen}
+        title="Confirmar"
+        onClose={() => setDeleteModalOpen(false)}
+        onCancel={() => setDeleteModalOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        type="danger"
+        width="30%"
+        height="30%"
+      >
+        <p>¿Estás seguro de eliminar a {selectedPet?.name}?</p>
+      </Modal>
       <div className="card p-4 shadow-2 border-round-lg">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Mascotas</h1>
@@ -81,7 +108,7 @@ const PetsPage = () => {
               pet={pet}
               onEdit={handleEdit}
               onDetails={handleDetails}
-              onDelete={handleDelete} // <-- asegurado aquí
+              onDelete={handleDelete}
             />
           ))}
         </div>

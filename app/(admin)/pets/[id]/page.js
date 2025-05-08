@@ -98,9 +98,9 @@ function DetailView({ pet }) {
 
           <div className="space-y-2 pt-4">
             <label className="block mb-1 font-medium">Tipo</label>
-            <p>{pet.petType.name}</p>
+            <p>{pet?.petType?.name}</p>
           </div>
-          
+
           <div className="space-y-2 pt-4">
             <label className="block mb-1 font-medium">Centro de adopción</label>
             <p>{pet.adoptionCenter.name}</p>
@@ -110,13 +110,9 @@ function DetailView({ pet }) {
             <label className="block mb-1 font-medium">Descripción</label>
             <p>{pet.description}</p>
           </div>
-          
-          {
-            console.log("Hola mascota") 
-          }
-          {
-            console.log(pet) 
-          }
+
+          {console.log("Hola mascota")}
+          {console.log(pet)}
         </div>
       ),
     },
