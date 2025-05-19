@@ -8,8 +8,23 @@ export default function PetCard({ pet, isFeatured = false }) {
   const [isLiked, setIsLiked] = useState(false);
   const router = useRouter();
 
-  const goToProfile = () => {
-    router.push(`/user-home/pets/${pet.id}`);
+  const handleCardClick = () => {
+    if (!pet?.id) {
+      console.error("Pet ID is missing");
+      return;
+    }
+    router.push(`/pets/${pet.id}`);
+  };
+
+  const handleButtonClick = (e) => {
+    e.stopPropagation();
+    handleCardClick();
+  };
+
+  const handleLike = (e) => {
+    e.stopPropagation();
+    setIsLiked(!isLiked);
+    // Aquí podrías añadir una llamada a la API para guardar el like
   };
 
   return (
@@ -17,31 +32,28 @@ export default function PetCard({ pet, isFeatured = false }) {
       className={`bg-white rounded-lg overflow-hidden shadow-md border ${
         isFeatured ? "border-blue-300" : "border-gray-200"
       } transition-all duration-300 ${isFeatured ? "scale-100" : "scale-90"} cursor-pointer`}
-      onClick={goToProfile}
+      onClick={handleCardClick}
     >
-      {/* Imagen */}
       <div className="relative h-48">
         <Image
-          src={pet.image}
+          src={pet.files || "/default-pet.jpg"}
           alt={pet.name}
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={isFeatured}
         />
         <button
-          onClick={(e) => {
-            e.stopPropagation(); // prevenir navegación al hacer like
-            setIsLiked(!isLiked);
-          }}
+          onClick={handleLike}
           className={`absolute top-3 right-3 p-1.5 rounded-full ${
             isLiked ? "bg-red-100 text-red-500" : "bg-white text-gray-400"
           } transition-colors z-10`}
+          aria-label={isLiked ? "Quitar like" : "Dar like"}
         >
           <Heart className="h-4 w-4" fill={isLiked ? "currentColor" : "none"} />
         </button>
       </div>
 
-      {/* Contenido */}
       <div className="p-4">
         <div className="flex justify-between items-start mb-2">
           <div>
@@ -63,6 +75,7 @@ export default function PetCard({ pet, isFeatured = false }) {
                 ? "bg-blue-100 text-blue-600"
                 : "bg-pink-100 text-pink-600"
             }`}
+            aria-label={`Género: ${pet.gender === "male" ? "Macho" : "Hembra"}`}
           >
             {pet.gender === "male" ? (
               <Mars className="h-3.5 w-3.5" />
@@ -73,16 +86,13 @@ export default function PetCard({ pet, isFeatured = false }) {
         </div>
 
         <div className="flex justify-between text-xs text-gray-600 mb-3">
-          <span>{pet.age}</span>
+          <span>{pet.age} años</span>
           <span>{pet.breed}</span>
         </div>
 
         {isFeatured && (
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              goToProfile();
-            }}
+            onClick={handleButtonClick}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-1.5 rounded-md text-sm font-medium transition-colors"
           >
             Conocer más

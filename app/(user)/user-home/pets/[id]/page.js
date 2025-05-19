@@ -1,114 +1,204 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Navigation from '../../../../landing/components/Navigation';
-import Footer from '../../../../landing/components/Footer';
-
-import dog1 from "../../../../landing/assets/pets/dog1.jpg";
-import cat1 from "../../../../landing/assets/pets/cat1.jpg";
-import rabbit1 from "../../../../landing/assets/pets/rabbit1.jpg";
-import dog2 from "../../../../landing/assets/pets/dog2.jpg";
-import cat2 from "../../../../landing/assets/pets/cat2.jpg";
-import rabbit2 from "../../../../landing/assets/pets/rabbit2.jpg";
-
-const pets = [
-  {
-    id: 1,
-    name: "Luna",
-    gender: "female",
-    age: "2 años",
-    breed: "Labrador",
-    location: "Bogotá",
-    image: dog1,
-    type: "perro",
-  },
-  {
-    id: 2,
-    name: "Max",
-    gender: "male",
-    age: "3 años",
-    breed: "Siamés",
-    location: "Medellín",
-    image: cat1,
-    type: "gato",
-  },
-  {
-    id: 3,
-    name: "Bugs",
-    gender: "male",
-    age: "1 año",
-    breed: "Conejo Holandés",
-    location: "Cali",
-    image: rabbit1,
-    type: "conejo",
-  },
-  {
-    id: 4,
-    name: "Rocky",
-    gender: "male",
-    age: "4 años",
-    breed: "Bulldog",
-    location: "Barranquilla",
-    image: dog2,
-    type: "perro",
-  },
-  {
-    id: 5,
-    name: "Misty",
-    gender: "female",
-    age: "2 años",
-    breed: "Persa",
-    location: "Cartagena",
-    image: cat2,
-    type: "gato",
-  },
-  {
-    id: 6,
-    name: "Cotton",
-    gender: "female",
-    age: "8 meses",
-    breed: "Conejo Enano",
-    location: "Bucaramanga",
-    image: rabbit2,
-    type: "conejo",
-  },
-];
+import { getPetById } from "@/app/(user)/user-home/services/petsServices";
+import { getAdoptionCenter } from "@/services/centersService";
+import Navigation from "@/app/landing/components/Navigation";
+import Footer from "@/app/landing/components/Footer";
+import Image from "next/image";
+import { MapPin, Heart, Phone, Mail, Clock } from "lucide-react";
 
 export default function PetProfilePage() {
   const { id } = useParams();
+  const router = useRouter();
   const [pet, setPet] = useState(null);
+  const [center, setCenter] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
-    const selectedPet = pets.find((p) => p.id === parseInt(id));
-    setPet(selectedPet);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        
+        // Obtener datos de la mascota
+        const petData = await getPetById(id);
+        setPet(petData);
+        
+        // Obtener datos del centro de adopción si está disponible
+        if (petData.adoptionCenterId) {
+          const centerData = await getAdoptionCenter(petData.adoptionCenterId);
+          setCenter(centerData);
+        }
+      } catch (err) {
+        setError(err.message || "No pudimos cargar la información");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) fetchData();
   }, [id]);
 
-  if (!pet) return <div>Cargando mascota...</div>;
+  const handleAdoptClick = () => {
+    if (!pet) return;
+    const numeroWhatsApp = "573124783081";
+    const mensaje = `Hola, estoy interesado en adoptar a ${pet.name} (ID: ${pet.id}). ¿Podrían darme más información?`;
+    const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, "_blank");
+  };
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    // Aquí podrías añadir una llamada a la API para guardar el like
+  };
+
+  if (loading) return (
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Navigation />
+      <main className="flex-grow flex items-center justify-center">
+        <div className="text-center py-10">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p>Cargando información de la mascota...</p>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+
+  if (error) return (
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Navigation />
+      <main className="flex-grow flex items-center justify-center">
+        <div className="text-center py-10 text-red-500">
+          <p>{error}</p>
+          <button 
+            onClick={() => router.push("/pets")}
+            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Volver al listado
+          </button>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+
+  if (!pet) return (
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Navigation />
+      <main className="flex-grow flex items-center justify-center">
+        <div className="text-center py-10">
+          <p>Mascota no encontrada</p>
+          <button 
+            onClick={() => router.push("/pets")}
+            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Ver todas las mascotas
+          </button>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Navigation />
-
       <main className="flex-grow container mx-auto px-4 py-10">
-        <div className="bg-white rounded-xl shadow-lg p-6 md:p-10 flex flex-col md:flex-row items-center gap-8">
-          <img
-            src={pet.image.src}
-            alt={pet.name}
-            className="w-60 h-60 object-cover rounded-full border-4 border-blue-100 shadow-md"
-          />
-          <div className="text-center md:text-left">
-            <h2 className="text-3xl font-bold mb-2">{pet.name}</h2>
-            <p className="text-gray-600 mb-1">🐾 Raza: {pet.breed}</p>
-            <p className="text-gray-600 mb-1">📍 Ciudad: {pet.location}</p>
-            <p className="text-gray-600 mb-1">🎂 Edad: {pet.age}</p>
-            <p className="text-gray-600 mb-1">⚥ Género: {pet.gender === "male" ? "Macho" : "Hembra"}</p>
-            <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm md:text-base font-medium transition">
-              Iniciar proceso de adopción
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          {/* Header con imagen */}
+          <div className="relative h-64 md:h-80 w-full">
+            <Image
+              src={pet.imageUrl || "/default-pet.jpg"}
+              alt={pet.name}
+              fill
+              className="object-cover"
+            />
+            <button
+              onClick={handleLike}
+              className={`absolute top-4 right-4 p-3 rounded-full ${
+                isLiked ? "bg-red-100 text-red-500" : "bg-white text-gray-400"
+              } shadow-md transition-colors z-10`}
+            >
+              <Heart className="h-6 w-6" fill={isLiked ? "currentColor" : "none"} />
             </button>
+          </div>
+
+          {/* Contenido principal */}
+          <div className="p-6 md:p-10 grid md:grid-cols-3 gap-8">
+            {/* Información de la mascota */}
+            <div className="md:col-span-2">
+              <h1 className="text-3xl font-bold mb-2">{pet.name}</h1>
+              <div className="flex items-center text-gray-600 mb-4">
+                <MapPin className="h-5 w-5 mr-1" />
+                <span>{pet.location}</span>
+              </div>
+
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold mb-2">Descripción</h2>
+                <p className="text-gray-700">{pet.description || "No hay descripción disponible."}</p>
+              </div>
+
+              <button
+                onClick={handleAdoptClick}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-lg font-medium transition"
+              >
+                Iniciar proceso de adopción
+              </button>
+            </div>
+
+            {/* Información del centro de adopción */}
+            {center && (
+              <div className="border border-gray-200 rounded-lg p-6 h-fit">
+                <h2 className="text-xl font-semibold mb-4">Centro de Adopción</h2>
+                <h3 className="text-lg font-medium mb-2">{center.name}</h3>
+                
+                <div className="space-y-3">
+                  <div className="flex items-start">
+                    <MapPin className="h-5 w-5 mt-0.5 mr-2 text-gray-600" />
+                    <p>{center.address}</p>
+                  </div>
+                  
+                  {center.phone && (
+                    <div className="flex items-center">
+                      <Phone className="h-5 w-5 mr-2 text-gray-600" />
+                      <a href={`tel:${center.phone}`} className="hover:underline">
+                        {center.phone}
+                      </a>
+                    </div>
+                  )}
+                  
+                  {center.email && (
+                    <div className="flex items-center">
+                      <Mail className="h-5 w-5 mr-2 text-gray-600" />
+                      <a href={`mailto:${center.email}`} className="hover:underline">
+                        {center.email}
+                      </a>
+                    </div>
+                  )}
+                  
+                  {center.hours && (
+                    <div className="flex items-start">
+                      <Clock className="h-5 w-5 mt-0.5 mr-2 text-gray-600" />
+                      <p>{center.hours}</p>
+                    </div>
+                  )}
+                </div>
+
+                {center.description && (
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <h4 className="font-medium mb-2">Sobre el centro</h4>
+                    <p className="text-sm text-gray-600">{center.description}</p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </main>
-
       <Footer />
     </div>
   );
