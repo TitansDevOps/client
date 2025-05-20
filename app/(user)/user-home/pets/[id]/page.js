@@ -2,11 +2,12 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getPetById } from "@/app/(user)/user-home/services/petsServices";
-import { getAdoptionCenter } from "@/services/centersService";
+// import { getAdoptionCenter } from "@/services/centersService";
 import Navigation from "@/app/landing/components/Navigation";
 import Footer from "@/app/landing/components/Footer";
 import Image from "next/image";
 import { MapPin, Heart, Phone, Mail, Clock } from "lucide-react";
+import HeaderAuth from "@/app/landing/components/HeaderAuth";
 
 export default function PetProfilePage() {
   const { id } = useParams();
@@ -25,12 +26,8 @@ export default function PetProfilePage() {
         // Obtener datos de la mascota
         const petData = await getPetById(id);
         setPet(petData);
+        setCenter(petData.adoptionCenter)
         
-        // Obtener datos del centro de adopción si está disponible
-        if (petData.adoptionCenterId) {
-          const centerData = await getAdoptionCenter(petData.adoptionCenterId);
-          setCenter(centerData);
-        }
       } catch (err) {
         setError(err.message || "No pudimos cargar la información");
         console.error(err);
@@ -106,7 +103,7 @@ export default function PetProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Navigation />
+      <HeaderAuth />
       <main className="flex-grow container mx-auto px-4 py-10">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           {/* Header con imagen */}
