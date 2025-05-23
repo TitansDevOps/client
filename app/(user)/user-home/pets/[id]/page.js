@@ -41,9 +41,8 @@ export default function PetProfilePage() {
 
   const handleAdoptClick = () => {
     if (!pet) return;
-    const numeroWhatsApp = "573124783081";
-    const mensaje = `Hola, estoy interesado en adoptar a ${pet.name} (ID: ${pet.id}). ¿Podrían darme más información?`;
-    const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+    const mensaje = `Hola, estoy interesado en adoptar a ${pet.name}. ¿Podrían darme más información?`;
+    const url = `https://wa.me/57${center.phone}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, "_blank");
   };
 
@@ -89,12 +88,12 @@ export default function PetProfilePage() {
       <main className="flex-grow flex items-center justify-center">
         <div className="text-center py-10">
           <p>Mascota no encontrada</p>
-          <button 
-            onClick={() => router.push("/pets")}
-            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
-          >
-            Ver todas las mascotas
-          </button>
+            <button
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+              onClick={() => router.push("/user/more-pets")}
+            >
+              Ver mascotas
+            </button>
         </div>
       </main>
       <Footer />
